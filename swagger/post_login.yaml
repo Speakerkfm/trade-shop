@@ -1,0 +1,13 @@
+post:
+  tags:
+    - login
+  description: |
+     Аутентификация пользователя по почте и паролю.
+  operationId: login
+  responses:
+    200:
+      description: 'OK'
+    401:
+      description: Wrong username or password
+  parameters:
+    - $ref: './parameter/login_body.yaml'

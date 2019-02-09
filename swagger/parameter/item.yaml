@@ -1,0 +1,9 @@
+description: Item
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  count:
+    type: integer

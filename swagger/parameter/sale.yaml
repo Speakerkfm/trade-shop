@@ -1,0 +1,12 @@
+description: Продажа
+properties:
+  id:
+    type: integer
+    description: id продажи
+  items:
+    type: array
+    items:
+      $ref: './item_sale.yaml'
+  total_count:
+    type: number
+    description: Общая стоимость лота

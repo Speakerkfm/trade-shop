@@ -1,0 +1,19 @@
+schema:
+  description: Информация пользователя для входа в систему
+  type: object
+  properties:
+    email:
+      type: string
+      x-insullable: false
+    password:
+      type: string
+      x-insullable: false
+  required:
+    - email
+    - password
+  example:
+    email: speaker@mail.com
+    password: "123456"
+in: body
+name: body
+required: true

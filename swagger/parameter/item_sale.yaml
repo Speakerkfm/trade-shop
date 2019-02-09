@@ -1,0 +1,11 @@
+description: Предметы на продажу
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  count:
+    type: integer
+  price:
+    type: number

@@ -1,0 +1,6 @@
+name: sale_id
+description: идентификатор продажи
+in: path
+type: string
+format: uuid
+required: true

@@ -1,0 +1,14 @@
+get:
+  tags:
+    - sales
+  description: Список лотов
+  operationId: sales_list
+  responses:
+    200:
+      description: Список лотов
+      schema:
+        type: array
+        items:
+          $ref: './parameter/sale.yaml'
+    401:
+      $ref: './responses/response_401.yaml'

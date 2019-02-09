@@ -1,0 +1,21 @@
+swagger: "2.0"
+info:
+  title: Trade Shop
+  version: 0.1.0
+produces:
+- application/json
+consumes:
+- application/json
+schemes:
+- http
+paths:
+  /login:
+    $ref: './post_login.yaml'
+  /inventory:
+    $ref: './inventory.yaml'
+  /sale:
+    $ref: './post_sale.yaml'
+  /sales:
+    $ref: './sales.yaml'
+  /sales/{sale_id}/buy:
+    $ref: './buy.yaml'
