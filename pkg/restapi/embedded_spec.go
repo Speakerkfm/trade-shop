@@ -208,7 +208,9 @@ func init() {
           "type": "integer"
         },
         "id": {
-          "type": "integer"
+          "type": "string",
+          "format": "uuid",
+          "x-nullable": false
         },
         "name": {
           "type": "string"
@@ -220,7 +222,9 @@ func init() {
       "properties": {
         "id": {
           "description": "id продажи",
-          "type": "integer"
+          "type": "string",
+          "format": "uuid",
+          "x-nullable": false
         },
         "items": {
           "type": "array",
@@ -232,7 +236,8 @@ func init() {
                 "type": "integer"
               },
               "id": {
-                "type": "integer"
+                "type": "string",
+                "format": "uuid"
               },
               "name": {
                 "type": "string"
@@ -442,7 +447,9 @@ func init() {
           "type": "integer"
         },
         "id": {
-          "type": "integer"
+          "type": "string",
+          "format": "uuid",
+          "x-nullable": false
         },
         "name": {
           "type": "string"
@@ -454,7 +461,9 @@ func init() {
       "properties": {
         "id": {
           "description": "id продажи",
-          "type": "integer"
+          "type": "string",
+          "format": "uuid",
+          "x-nullable": false
         },
         "items": {
           "type": "array",
@@ -466,7 +475,8 @@ func init() {
                 "type": "integer"
               },
               "id": {
-                "type": "integer"
+                "type": "string",
+                "format": "uuid"
               },
               "name": {
                 "type": "string"

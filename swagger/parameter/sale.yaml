@@ -1,7 +1,9 @@
 description: Продажа
 properties:
   id:
-    type: integer
+    type: "string"
+    format: "uuid"
+    x-nullable: false
     description: id продажи
   items:
     type: array

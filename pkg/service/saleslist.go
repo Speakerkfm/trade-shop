@@ -1,6 +1,8 @@
 package service
 
 import (
+	"github.com/go-openapi/strfmt"
+	"github.com/satori/go.uuid"
 	"trade-shop/pkg/models"
 	"trade-shop/pkg/store"
 )
@@ -17,16 +19,16 @@ func NewSalesList(store *store.Store) *SalesList {
 	return sls
 }
 
-func (sls *SalesList) GetSalesList() []*models.Sale {
+func (sls *SalesList) GetSalesListJSON() []*models.Sale {
 	salesList, _ := sls.store.GetSaleItemList()
 
 	var salesBody []*models.Sale
-	var salesMap = make(map[int64]int, len(salesList))
+	var salesMap = make(map[uuid.UUID]int, len(salesList))
 	var count = 0
 
 	for idx := range salesList {
 		item := &models.SaleItemsItems0{
-			ID:    salesList[idx].ItemID,
+			ID:    strfmt.UUID(salesList[idx].ItemID.String()),
 			Name:  salesList[idx].Name,
 			Count: salesList[idx].Count,
 			Price: salesList[idx].Price,
@@ -34,7 +36,7 @@ func (sls *SalesList) GetSalesList() []*models.Sale {
 
 		_, ok := salesMap[salesList[idx].SaleID]
 		if !ok {
-			salesBody = append(salesBody, &models.Sale{ID: salesList[idx].SaleID})
+			salesBody = append(salesBody, &models.Sale{ID: strfmt.UUID(salesList[idx].ItemID.String())})
 			salesMap[salesList[idx].SaleID] = count
 			count++
 		}

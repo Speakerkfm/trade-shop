@@ -2,7 +2,9 @@ description: Item
 type: object
 properties:
   id:
-    type: integer
+    type: "string"
+    format: "uuid"
+    x-nullable: false
   name:
     type: string
   count:

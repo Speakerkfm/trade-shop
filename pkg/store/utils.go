@@ -23,3 +23,9 @@ func notFound(err error) bool {
 
 	panic(err)
 }
+
+func check(err error) {
+	if err != gorm.ErrRecordNotFound && err != nil {
+		panic(err)
+	}
+}

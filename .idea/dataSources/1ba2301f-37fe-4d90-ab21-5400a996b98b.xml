@@ -1115,180 +1115,120 @@
     <table id="282" parent="6" name="users"/>
     <column id="283" parent="278" name="user_id">
       <Position>1</Position>
-      <DataType>int(11) unsigned|0s</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
+      <DataType>char(36)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="284" parent="278" name="item_id">
       <Position>2</Position>
-      <DataType>int(11) unsigned|0s</DataType>
-      <NotNull>1</NotNull>
+      <DataType>char(36)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="285" parent="278" name="count">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="286" parent="278" name="inventory_items_id_fk">
-      <ColNames>item_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="287" parent="278" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>user_id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="288" parent="278" name="inventory_users_id_fk">
-      <ColNames>user_id</ColNames>
-      <RefSchemaName>trade-shop</RefSchemaName>
-      <RefTableName>users</RefTableName>
-      <RefColNames>id</RefColNames>
-      <OnUpdate>cascade</OnUpdate>
-      <OnDelete>cascade</OnDelete>
-    </foreign-key>
-    <foreign-key id="289" parent="278" name="inventory_items_id_fk">
-      <ColNames>item_id</ColNames>
-      <RefSchemaName>trade-shop</RefSchemaName>
-      <RefTableName>items</RefTableName>
-      <RefColNames>id</RefColNames>
-      <OnUpdate>cascade</OnUpdate>
-      <OnDelete>cascade</OnDelete>
-    </foreign-key>
-    <column id="290" parent="279" name="sale_id">
+    <column id="286" parent="279" name="sale_id">
       <Position>1</Position>
-      <DataType>int(10) unsigned|0s</DataType>
+      <DataType>char(36)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="291" parent="279" name="item_id">
+    <column id="287" parent="279" name="item_id">
       <Position>2</Position>
-      <DataType>int(10) unsigned|0s</DataType>
+      <DataType>char(36)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="292" parent="279" name="count">
+    <column id="288" parent="279" name="count">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="293" parent="279" name="price">
+    <column id="289" parent="279" name="price">
       <Position>4</Position>
       <DataType>double unsigned|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="294" parent="279" name="item_sale_sales_id_fk">
+    <index id="290" parent="279" name="item_sale_sales_id_fk">
       <ColNames>sale_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="295" parent="279" name="item_sale_items_id_fk">
+    <index id="291" parent="279" name="item_sale_items_id_fk">
       <ColNames>item_id</ColNames>
       <Type>btree</Type>
     </index>
-    <foreign-key id="296" parent="279" name="item_sale_sales_id_fk">
-      <ColNames>sale_id</ColNames>
-      <RefSchemaName>trade-shop</RefSchemaName>
-      <RefTableName>sales</RefTableName>
-      <RefColNames>id</RefColNames>
-      <OnUpdate>cascade</OnUpdate>
-      <OnDelete>cascade</OnDelete>
-    </foreign-key>
-    <foreign-key id="297" parent="279" name="item_sale_items_id_fk">
-      <ColNames>item_id</ColNames>
-      <RefSchemaName>trade-shop</RefSchemaName>
-      <RefTableName>items</RefTableName>
-      <RefColNames>id</RefColNames>
-      <OnUpdate>cascade</OnUpdate>
-      <OnDelete>cascade</OnDelete>
-    </foreign-key>
-    <column id="298" parent="280" name="id">
+    <column id="292" parent="280" name="id">
       <Position>1</Position>
-      <DataType>int(11) unsigned|0s</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
+      <DataType>char(36)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="299" parent="280" name="name">
+    <column id="293" parent="280" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="300" parent="280" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
+    <index id="294" parent="280" name="items_id_uindex">
       <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="301" parent="281" name="id">
-      <Position>1</Position>
-      <DataType>int(11) unsigned|0s</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="302" parent="281" name="user_id">
-      <Position>2</Position>
-      <DataType>int(11) unsigned|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="303" parent="281" name="sales_users_id_fk">
-      <ColNames>user_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="304" parent="281" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="305" parent="281" name="sales_users_id_fk">
-      <ColNames>user_id</ColNames>
-      <RefSchemaName>trade-shop</RefSchemaName>
-      <RefTableName>users</RefTableName>
-      <RefColNames>id</RefColNames>
-      <OnUpdate>cascade</OnUpdate>
-      <OnDelete>cascade</OnDelete>
-    </foreign-key>
-    <column id="306" parent="282" name="id">
-      <Position>1</Position>
-      <DataType>int(11) unsigned|0s</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="307" parent="282" name="password">
-      <Position>2</Position>
-      <DataType>varchar(64)|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="308" parent="282" name="bill">
-      <Position>3</Position>
-      <DataType>double|0s</DataType>
-      <NotNull>1</NotNull>
-      <DefaultExpression>&apos;0&apos;</DefaultExpression>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="309" parent="282" name="email">
-      <Position>4</Position>
-      <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="310" parent="282" name="users_email_uindex">
-      <ColNames>email</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="311" parent="282" name="PRIMARY">
+    <key id="295" parent="280" name="items_id_uindex">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>items_id_uindex</UnderlyingIndexName>
+    </key>
+    <column id="296" parent="281" name="id">
+      <Position>1</Position>
+      <DataType>char(36)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="297" parent="281" name="user_id">
+      <Position>2</Position>
+      <DataType>char(36)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="298" parent="281" name="sales_id_uindex">
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="299" parent="281" name="sales_id_uindex">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>sales_id_uindex</UnderlyingIndexName>
+    </key>
+    <column id="300" parent="282" name="id">
+      <Position>1</Position>
+      <DataType>char(36)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="301" parent="282" name="email">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+      <Collation>utf8_general_ci</Collation>
+    </column>
+    <column id="302" parent="282" name="password">
+      <Position>3</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+      <Collation>utf8_general_ci</Collation>
+    </column>
+    <index id="303" parent="282" name="users_id_uindex">
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="304" parent="282" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="312" parent="282" name="users_email_uindex">
-      <ColNames>email</ColNames>
-      <UnderlyingIndexName>users_email_uindex</UnderlyingIndexName>
+    <key id="305" parent="282" name="users_id_uindex">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>users_id_uindex</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>

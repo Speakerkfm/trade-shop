@@ -17,3 +17,18 @@ func (st *Store) UserByEmail(email string) (*User, bool) {
 
 	return &user, found(err)
 }
+
+func (u *User) PasswordValid(password string) bool {
+	//err := bcrypt.CompareHashAndPassword([]byte(*u.Password), []byte(password))
+	//return err == nil
+	return *u.Password == password
+}
+
+func (st *Store) UpdateUserBill(userID uuid.UUID, newBill float64) bool {
+	err := st.gorm.
+		Table("users").
+		Where("id = ?", userID.String()).
+		Updates(map[string]interface{}{"bill": newBill}).Error
+
+	return found(err)
+}

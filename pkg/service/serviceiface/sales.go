@@ -7,5 +7,5 @@ import (
 )
 
 type SalesList interface {
-	GetSalesList() []*models.Sale
+	GetSalesListJSON() []*models.Sale
 }

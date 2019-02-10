@@ -17,5 +17,5 @@ func NewContext(st store.StoreInterface, sales serviceiface.SalesList) *Context 
 }
 
 func (c *Context) GetSalesList(params sales.SalesListParams) middleware.Responder {
-	return sales.NewSalesListOK().WithPayload(c.sales.GetSalesList())
+	return sales.NewSalesListOK().WithPayload(c.sales.GetSalesListJSON())
 }

@@ -189,7 +189,9 @@
           "type": "integer"
         },
         "id": {
-          "type": "integer"
+          "type": "string",
+          "format": "uuid",
+          "x-nullable": false
         },
         "name": {
           "type": "string"
@@ -201,7 +203,9 @@
       "properties": {
         "id": {
           "description": "id продажи",
-          "type": "integer"
+          "type": "string",
+          "format": "uuid",
+          "x-nullable": false
         },
         "items": {
           "type": "array",
@@ -213,7 +217,8 @@
                 "type": "integer"
               },
               "id": {
-                "type": "integer"
+                "type": "string",
+                "format": "uuid"
               },
               "name": {
                 "type": "string"
