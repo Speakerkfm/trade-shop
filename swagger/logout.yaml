@@ -1,0 +1,10 @@
+get:
+  tags:
+  - user
+  description: logout
+  operationId: logout
+  responses:
+    200:
+      description: "OK"
+    401:
+      $ref: './responses/response_401.yaml'

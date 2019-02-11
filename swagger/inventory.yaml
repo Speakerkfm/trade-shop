@@ -1,6 +1,6 @@
 get:
   tags:
-    - inventory
+  - user
   description: User inventory
   operationId: inventory
   responses:

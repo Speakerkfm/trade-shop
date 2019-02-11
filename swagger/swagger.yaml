@@ -11,9 +11,11 @@ schemes:
 paths:
   /login:
     $ref: './post_login.yaml'
-  /inventory:
+  /user/logout:
+    $ref: './logout.yaml'
+  /user/inventory:
     $ref: './inventory.yaml'
-  /sale:
+  /user/sale:
     $ref: './post_sale.yaml'
   /sales:
     $ref: './sales.yaml'

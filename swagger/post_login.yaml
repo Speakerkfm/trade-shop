@@ -1,12 +1,14 @@
 post:
   tags:
     - login
-  description: |
-     Аутентификация пользователя по почте и паролю.
+  description: Аутентификация пользователя по почте и паролю.
   operationId: login
   responses:
-    200:
-      description: 'OK'
+    302:
+      description: Редирект
+      headers:
+        Location:
+          type: "string"
     401:
       description: Wrong username or password
   parameters:

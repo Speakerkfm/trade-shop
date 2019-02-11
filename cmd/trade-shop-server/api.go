@@ -6,13 +6,13 @@ import (
 	"gopkg.in/boj/redistore.v1"
 	"net/http"
 	"trade-shop/pkg/flags"
-	"trade-shop/pkg/handlers/inventory"
 	"trade-shop/pkg/handlers/login"
 	"trade-shop/pkg/handlers/sales"
+	"trade-shop/pkg/handlers/user"
 	"trade-shop/pkg/restapi/operations"
-	inventoryApi "trade-shop/pkg/restapi/operations/inventory"
 	loginApi "trade-shop/pkg/restapi/operations/login"
 	salesApi "trade-shop/pkg/restapi/operations/sales"
+	userApi "trade-shop/pkg/restapi/operations/user"
 	"trade-shop/pkg/service"
 	"trade-shop/pkg/store"
 )
@@ -24,11 +24,12 @@ func configureAPI(api *operations.TradeShopAPI, db *gorm.DB, rst *redistore.Redi
 
 	salesContext := sales.NewContext(st, salesService, authService)
 	loginContext := login.NewContext(st, rst, authService)
-	inventoryContext := inventory.NewContext(st, authService)
+	userContext := user.NewContext(st, rst, authService)
 
 	api.SalesSalesListHandler = salesApi.SalesListHandlerFunc(salesContext.GetSalesList)
 	api.LoginLoginHandler = loginApi.LoginHandlerFunc(loginContext.AuthByEmailAndPassword)
-	api.InventoryInventoryHandler = inventoryApi.InventoryHandlerFunc(inventoryContext.GetInventoryList)
+	api.UserInventoryHandler = userApi.InventoryHandlerFunc(userContext.GetInventoryList)
+	api.UserLogoutHandler = userApi.LogoutHandlerFunc(userContext.LogoutUser)
 
 	api.ServerShutdown = func() {}
 
