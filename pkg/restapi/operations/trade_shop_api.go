@@ -19,10 +19,10 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"trade-shop/pkg/restapi/operations/inventory"
 	"trade-shop/pkg/restapi/operations/login"
 	"trade-shop/pkg/restapi/operations/sale"
 	"trade-shop/pkg/restapi/operations/sales"
+	"trade-shop/pkg/restapi/operations/user"
 )
 
 // NewTradeShopAPI creates a new TradeShop instance
@@ -45,11 +45,14 @@ func NewTradeShopAPI(spec *loads.Document) *TradeShopAPI {
 		SalesBuyHandler: sales.BuyHandlerFunc(func(params sales.BuyParams) middleware.Responder {
 			return middleware.NotImplemented("operation SalesBuy has not yet been implemented")
 		}),
-		InventoryInventoryHandler: inventory.InventoryHandlerFunc(func(params inventory.InventoryParams) middleware.Responder {
-			return middleware.NotImplemented("operation InventoryInventory has not yet been implemented")
+		UserInventoryHandler: user.InventoryHandlerFunc(func(params user.InventoryParams) middleware.Responder {
+			return middleware.NotImplemented("operation UserInventory has not yet been implemented")
 		}),
 		LoginLoginHandler: login.LoginHandlerFunc(func(params login.LoginParams) middleware.Responder {
 			return middleware.NotImplemented("operation LoginLogin has not yet been implemented")
+		}),
+		UserLogoutHandler: user.LogoutHandlerFunc(func(params user.LogoutParams) middleware.Responder {
+			return middleware.NotImplemented("operation UserLogout has not yet been implemented")
 		}),
 		SaleSaleHandler: sale.SaleHandlerFunc(func(params sale.SaleParams) middleware.Responder {
 			return middleware.NotImplemented("operation SaleSale has not yet been implemented")
@@ -90,10 +93,12 @@ type TradeShopAPI struct {
 
 	// SalesBuyHandler sets the operation handler for the buy operation
 	SalesBuyHandler sales.BuyHandler
-	// InventoryInventoryHandler sets the operation handler for the inventory operation
-	InventoryInventoryHandler inventory.InventoryHandler
+	// UserInventoryHandler sets the operation handler for the inventory operation
+	UserInventoryHandler user.InventoryHandler
 	// LoginLoginHandler sets the operation handler for the login operation
 	LoginLoginHandler login.LoginHandler
+	// UserLogoutHandler sets the operation handler for the logout operation
+	UserLogoutHandler user.LogoutHandler
 	// SaleSaleHandler sets the operation handler for the sale operation
 	SaleSaleHandler sale.SaleHandler
 	// SalesSalesListHandler sets the operation handler for the sales list operation
@@ -165,12 +170,16 @@ func (o *TradeShopAPI) Validate() error {
 		unregistered = append(unregistered, "sales.BuyHandler")
 	}
 
-	if o.InventoryInventoryHandler == nil {
-		unregistered = append(unregistered, "inventory.InventoryHandler")
+	if o.UserInventoryHandler == nil {
+		unregistered = append(unregistered, "user.InventoryHandler")
 	}
 
 	if o.LoginLoginHandler == nil {
 		unregistered = append(unregistered, "login.LoginHandler")
+	}
+
+	if o.UserLogoutHandler == nil {
+		unregistered = append(unregistered, "user.LogoutHandler")
 	}
 
 	if o.SaleSaleHandler == nil {
@@ -287,17 +296,22 @@ func (o *TradeShopAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/inventory"] = inventory.NewInventory(o.context, o.InventoryInventoryHandler)
+	o.handlers["GET"]["/user/inventory"] = user.NewInventory(o.context, o.UserInventoryHandler)
 
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/login"] = login.NewLogin(o.context, o.LoginLoginHandler)
 
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/user/logout"] = user.NewLogout(o.context, o.UserLogoutHandler)
+
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/sale"] = sale.NewSale(o.context, o.SaleSaleHandler)
+	o.handlers["POST"]["/user/sale"] = sale.NewSale(o.context, o.SaleSaleHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

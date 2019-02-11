@@ -36,7 +36,6 @@ func NewLogin(ctx *middleware.Context, handler LoginHandler) *Login {
 
 Аутентификация пользователя по почте и паролю.
 
-
 */
 type Login struct {
 	Context *middleware.Context

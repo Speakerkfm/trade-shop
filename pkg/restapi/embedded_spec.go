@@ -33,32 +33,9 @@ func init() {
     "version": "0.1.0"
   },
   "paths": {
-    "/inventory": {
-      "get": {
-        "description": "User inventory",
-        "tags": [
-          "inventory"
-        ],
-        "operationId": "inventory",
-        "responses": {
-          "200": {
-            "description": "Inventory",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/item"
-              }
-            }
-          },
-          "401": {
-            "description": "Пользователь не авторизован"
-          }
-        }
-      }
-    },
     "/login": {
       "post": {
-        "description": "Аутентификация пользователя по почте и паролю.\n",
+        "description": "Аутентификация пользователя по почте и паролю.",
         "tags": [
           "login"
         ],
@@ -89,28 +66,16 @@ func init() {
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "302": {
+            "description": "Редирект",
+            "headers": {
+              "Location": {
+                "type": "string"
+              }
+            }
           },
           "401": {
             "description": "Wrong username or password"
-          }
-        }
-      }
-    },
-    "/sale": {
-      "post": {
-        "description": "Продажа предмета пользователем",
-        "tags": [
-          "sale"
-        ],
-        "operationId": "sale",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Пользователь не авторизован"
           }
         }
       }
@@ -155,6 +120,63 @@ func init() {
             "required": true
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Пользователь не авторизован"
+          }
+        }
+      }
+    },
+    "/user/inventory": {
+      "get": {
+        "description": "User inventory",
+        "tags": [
+          "user"
+        ],
+        "operationId": "inventory",
+        "responses": {
+          "200": {
+            "description": "Inventory",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/item"
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован"
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "description": "logout",
+        "tags": [
+          "user"
+        ],
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Пользователь не авторизован"
+          }
+        }
+      }
+    },
+    "/user/sale": {
+      "post": {
+        "description": "Продажа предмета пользователем",
+        "tags": [
+          "sale"
+        ],
+        "operationId": "sale",
         "responses": {
           "200": {
             "description": "OK"
@@ -239,32 +261,9 @@ func init() {
     "version": "0.1.0"
   },
   "paths": {
-    "/inventory": {
-      "get": {
-        "description": "User inventory",
-        "tags": [
-          "inventory"
-        ],
-        "operationId": "inventory",
-        "responses": {
-          "200": {
-            "description": "Inventory",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/item"
-              }
-            }
-          },
-          "401": {
-            "description": "Пользователь не авторизован"
-          }
-        }
-      }
-    },
     "/login": {
       "post": {
-        "description": "Аутентификация пользователя по почте и паролю.\n",
+        "description": "Аутентификация пользователя по почте и паролю.",
         "tags": [
           "login"
         ],
@@ -295,28 +294,16 @@ func init() {
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "302": {
+            "description": "Редирект",
+            "headers": {
+              "Location": {
+                "type": "string"
+              }
+            }
           },
           "401": {
             "description": "Wrong username or password"
-          }
-        }
-      }
-    },
-    "/sale": {
-      "post": {
-        "description": "Продажа предмета пользователем",
-        "tags": [
-          "sale"
-        ],
-        "operationId": "sale",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Пользователь не авторизован"
           }
         }
       }
@@ -361,6 +348,63 @@ func init() {
             "required": true
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Пользователь не авторизован"
+          }
+        }
+      }
+    },
+    "/user/inventory": {
+      "get": {
+        "description": "User inventory",
+        "tags": [
+          "user"
+        ],
+        "operationId": "inventory",
+        "responses": {
+          "200": {
+            "description": "Inventory",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/item"
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован"
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "description": "logout",
+        "tags": [
+          "user"
+        ],
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Пользователь не авторизован"
+          }
+        }
+      }
+    },
+    "/user/sale": {
+      "post": {
+        "description": "Продажа предмета пользователем",
+        "tags": [
+          "sale"
+        ],
+        "operationId": "sale",
         "responses": {
           "200": {
             "description": "OK"

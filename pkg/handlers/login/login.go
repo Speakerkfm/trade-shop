@@ -32,5 +32,5 @@ func (c *Context) AuthByEmailAndPassword(params login.LoginParams) middleware.Re
 	c.rst.SetMaxAge(10 * 24 * 3600)
 	session.Values["userID"] = user.ID.String()
 
-	return login.NewLoginOK()
+	return login.NewLoginFound().WithLocation("/user/inventory")
 }

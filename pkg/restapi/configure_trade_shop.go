@@ -11,10 +11,10 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 
 	"trade-shop/pkg/restapi/operations"
-	"trade-shop/pkg/restapi/operations/inventory"
 	"trade-shop/pkg/restapi/operations/login"
 	"trade-shop/pkg/restapi/operations/sale"
 	"trade-shop/pkg/restapi/operations/sales"
+	"trade-shop/pkg/restapi/operations/user"
 )
 
 //go:generate swagger generate server --target ../../pkg --name TradeShop --spec ../../tmp/swagger.yaml --exclude-main
@@ -40,11 +40,14 @@ func configureAPI(api *operations.TradeShopAPI) http.Handler {
 	api.SalesBuyHandler = sales.BuyHandlerFunc(func(params sales.BuyParams) middleware.Responder {
 		return middleware.NotImplemented("operation sales.Buy has not yet been implemented")
 	})
-	api.InventoryInventoryHandler = inventory.InventoryHandlerFunc(func(params inventory.InventoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation inventory.Inventory has not yet been implemented")
+	api.UserInventoryHandler = user.InventoryHandlerFunc(func(params user.InventoryParams) middleware.Responder {
+		return middleware.NotImplemented("operation user.Inventory has not yet been implemented")
 	})
 	api.LoginLoginHandler = login.LoginHandlerFunc(func(params login.LoginParams) middleware.Responder {
 		return middleware.NotImplemented("operation login.Login has not yet been implemented")
+	})
+	api.UserLogoutHandler = user.LogoutHandlerFunc(func(params user.LogoutParams) middleware.Responder {
+		return middleware.NotImplemented("operation user.Logout has not yet been implemented")
 	})
 	api.SaleSaleHandler = sale.SaleHandlerFunc(func(params sale.SaleParams) middleware.Responder {
 		return middleware.NotImplemented("operation sale.Sale has not yet been implemented")

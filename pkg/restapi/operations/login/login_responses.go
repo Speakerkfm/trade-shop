@@ -11,28 +11,50 @@ import (
 	"github.com/go-openapi/runtime"
 )
 
-// LoginOKCode is the HTTP code returned for type LoginOK
-const LoginOKCode int = 200
+// LoginFoundCode is the HTTP code returned for type LoginFound
+const LoginFoundCode int = 302
 
-/*LoginOK OK
+/*LoginFound Редирект
 
-swagger:response loginOK
+swagger:response loginFound
 */
-type LoginOK struct {
+type LoginFound struct {
+	/*
+
+	 */
+	Location string `json:"Location"`
 }
 
-// NewLoginOK creates LoginOK with default headers values
-func NewLoginOK() *LoginOK {
+// NewLoginFound creates LoginFound with default headers values
+func NewLoginFound() *LoginFound {
 
-	return &LoginOK{}
+	return &LoginFound{}
+}
+
+// WithLocation adds the location to the login found response
+func (o *LoginFound) WithLocation(location string) *LoginFound {
+	o.Location = location
+	return o
+}
+
+// SetLocation sets the location to the login found response
+func (o *LoginFound) SetLocation(location string) {
+	o.Location = location
 }
 
 // WriteResponse to the client
-func (o *LoginOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+func (o *LoginFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	// response header Location
+
+	location := o.Location
+	if location != "" {
+		rw.Header().Set("Location", location)
+	}
 
 	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
-	rw.WriteHeader(200)
+	rw.WriteHeader(302)
 }
 
 // LoginUnauthorizedCode is the HTTP code returned for type LoginUnauthorized
