@@ -2,7 +2,24 @@
 
 package store
 
+import (
+	"trade-shop/pkg/models"
+
+	uuid "github.com/satori/go.uuid"
+)
+
 type StoreInterface interface {
+	GetInventoryByUserId(userID uuid.UUID) ([]*models.Item, bool)
+	CreateItemToUser(userID uuid.UUID, item *models.Item) bool
+	UpdateItemToUser(userID uuid.UUID, itemID uuid.UUID, newCount int) bool
+	DeleteItemFromUser(userID uuid.UUID, itemID uuid.UUID) bool
+	GetItemByID(itemID uuid.UUID) (*Item, bool)
 	GetSaleItemList() ([]ItemSale, bool)
+	GetItemsInSaleBySaleID(saleID uuid.UUID) ([]ItemSale, bool)
+	DeleteItemsInSaleBySaleID(saleID uuid.UUID) bool
+	AddItemToSale(saleID uuid.UUID, item *models.SaleItemsItems0) bool
+	CreateNewSale(userID uuid.UUID) (uuid.UUID, bool)
+	DeleteSaleBySaleID(saleID uuid.UUID) bool
 	UserByEmail(email string) (*User, bool)
+	UpdateUserBill(userID uuid.UUID, newBill float64) bool
 }

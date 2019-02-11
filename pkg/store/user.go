@@ -13,7 +13,7 @@ type User struct {
 
 func (st *Store) UserByEmail(email string) (*User, bool) {
 	var user User
-	err := st.gorm.First(&user, "email = ?", email).Error
+	err := st.gorm.Table("users").First(&user, "email = ?", email).Error
 
 	return &user, found(err)
 }

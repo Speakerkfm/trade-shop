@@ -6,13 +6,12 @@ package login
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"github.com/gorilla/sessions"
 	"net/http"
 
-	errors "github.com/go-openapi/errors"
 	middleware "github.com/go-openapi/runtime/middleware"
 	strfmt "github.com/go-openapi/strfmt"
 	swag "github.com/go-openapi/swag"
-	validate "github.com/go-openapi/validate"
 )
 
 // LoginHandlerFunc turns a function with the right signature into a login handler
@@ -58,6 +57,10 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	res := o.Handler.Handle(Params) // actually handle the request
 
+	if err := sessions.Save(r, rw); err != nil {
+		panic(err)
+	}
+
 	o.Context.Respond(rw, r, route.Produces, route, res)
 
 }
@@ -67,47 +70,14 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 type LoginBody struct {
 
 	// email
-	// Required: true
-	Email *string `json:"email"`
+	Email string `json:"email,omitempty"`
 
 	// password
-	// Required: true
-	Password *string `json:"password"`
+	Password string `json:"password,omitempty"`
 }
 
 // Validate validates this login body
 func (o *LoginBody) Validate(formats strfmt.Registry) error {
-	var res []error
-
-	if err := o.validateEmail(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := o.validatePassword(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-func (o *LoginBody) validateEmail(formats strfmt.Registry) error {
-
-	if err := validate.Required("body"+"."+"email", "body", o.Email); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (o *LoginBody) validatePassword(formats strfmt.Registry) error {
-
-	if err := validate.Required("body"+"."+"password", "body", o.Password); err != nil {
-		return err
-	}
-
 	return nil
 }
 

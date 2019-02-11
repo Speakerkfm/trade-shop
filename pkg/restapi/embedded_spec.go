@@ -71,10 +71,6 @@ func init() {
             "schema": {
               "description": "Информация пользователя для входа в систему",
               "type": "object",
-              "required": [
-                "email",
-                "password"
-              ],
               "properties": {
                 "email": {
                   "type": "string",
@@ -117,10 +113,6 @@ func init() {
             "schema": {
               "description": "Информация пользователя для входа в систему",
               "type": "object",
-              "required": [
-                "email",
-                "password"
-              ],
               "properties": {
                 "email": {
                   "type": "string",
@@ -310,10 +302,6 @@ func init() {
             "schema": {
               "description": "Информация пользователя для входа в систему",
               "type": "object",
-              "required": [
-                "email",
-                "password"
-              ],
               "properties": {
                 "email": {
                   "type": "string",
@@ -356,10 +344,6 @@ func init() {
             "schema": {
               "description": "Информация пользователя для входа в систему",
               "type": "object",
-              "required": [
-                "email",
-                "password"
-              ],
               "properties": {
                 "email": {
                   "type": "string",

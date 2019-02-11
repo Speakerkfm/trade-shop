@@ -8,9 +8,6 @@ schema:
     password:
       type: string
       x-insullable: false
-  required:
-    - email
-    - password
   example:
     email: speaker@mail.com
     password: "123456"

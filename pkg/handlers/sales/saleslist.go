@@ -9,13 +9,17 @@ import (
 
 type Context struct {
 	st    store.StoreInterface
-	sales serviceiface.SalesList
+	sales serviceiface.SalesListService
+	auth  serviceiface.AuthService
 }
 
-func NewContext(st store.StoreInterface, sales serviceiface.SalesList) *Context {
-	return &Context{st: st, sales: sales}
+func NewContext(st store.StoreInterface, sales serviceiface.SalesListService, auth serviceiface.AuthService) *Context {
+	return &Context{st: st, sales: sales, auth: auth}
 }
 
 func (c *Context) GetSalesList(params sales.SalesListParams) middleware.Responder {
+	if _, ok := c.auth.GetUserAuth(params.HTTPRequest); !ok {
+		return sales.NewSalesListUnauthorized()
+	}
 	return sales.NewSalesListOK().WithPayload(c.sales.GetSalesListJSON())
 }

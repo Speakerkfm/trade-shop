@@ -7,19 +7,19 @@ import (
 	"trade-shop/pkg/store"
 )
 
-type SalesList struct {
+type SalesListService struct {
 	store store.StoreInterface
 }
 
-func NewSalesList(store *store.Store) *SalesList {
-	sls := &SalesList{
+func NewSalesListService(store *store.Store) *SalesListService {
+	sls := &SalesListService{
 		store: store,
 	}
 
 	return sls
 }
 
-func (sls *SalesList) GetSalesListJSON() []*models.Sale {
+func (sls *SalesListService) GetSalesListJSON() []*models.Sale {
 	salesList, _ := sls.store.GetSaleItemList()
 
 	var salesBody []*models.Sale

@@ -6,6 +6,6 @@ import (
 	"trade-shop/pkg/models"
 )
 
-type SalesList interface {
+type SalesListService interface {
 	GetSalesListJSON() []*models.Sale
 }

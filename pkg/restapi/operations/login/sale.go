@@ -8,11 +8,9 @@ package login
 import (
 	"net/http"
 
-	errors "github.com/go-openapi/errors"
 	middleware "github.com/go-openapi/runtime/middleware"
 	strfmt "github.com/go-openapi/strfmt"
 	swag "github.com/go-openapi/swag"
-	validate "github.com/go-openapi/validate"
 )
 
 // SaleHandlerFunc turns a function with the right signature into a sale handler
@@ -66,47 +64,14 @@ func (o *Sale) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 type SaleBody struct {
 
 	// email
-	// Required: true
-	Email *string `json:"email"`
+	Email string `json:"email,omitempty"`
 
 	// password
-	// Required: true
-	Password *string `json:"password"`
+	Password string `json:"password,omitempty"`
 }
 
 // Validate validates this sale body
 func (o *SaleBody) Validate(formats strfmt.Registry) error {
-	var res []error
-
-	if err := o.validateEmail(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := o.validatePassword(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-func (o *SaleBody) validateEmail(formats strfmt.Registry) error {
-
-	if err := validate.Required("body"+"."+"email", "body", o.Email); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (o *SaleBody) validatePassword(formats strfmt.Registry) error {
-
-	if err := validate.Required("body"+"."+"password", "body", o.Password); err != nil {
-		return err
-	}
-
 	return nil
 }
 
