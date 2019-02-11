@@ -102,34 +102,9 @@ func init() {
       "post": {
         "description": "Продажа предмета пользователем",
         "tags": [
-          "login"
+          "sale"
         ],
         "operationId": "sale",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "description": "Информация пользователя для входа в систему",
-              "type": "object",
-              "properties": {
-                "email": {
-                  "type": "string",
-                  "x-insullable": false
-                },
-                "password": {
-                  "type": "string",
-                  "x-insullable": false
-                }
-              },
-              "example": {
-                "email": "speaker@mail.com",
-                "password": "123456"
-              }
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -167,7 +142,7 @@ func init() {
       "get": {
         "description": "Купить лот",
         "tags": [
-          "buy"
+          "sales"
         ],
         "operationId": "buy",
         "parameters": [
@@ -333,34 +308,9 @@ func init() {
       "post": {
         "description": "Продажа предмета пользователем",
         "tags": [
-          "login"
+          "sale"
         ],
         "operationId": "sale",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "description": "Информация пользователя для входа в систему",
-              "type": "object",
-              "properties": {
-                "email": {
-                  "type": "string",
-                  "x-insullable": false
-                },
-                "password": {
-                  "type": "string",
-                  "x-insullable": false
-                }
-              },
-              "example": {
-                "email": "speaker@mail.com",
-                "password": "123456"
-              }
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -398,7 +348,7 @@ func init() {
       "get": {
         "description": "Купить лот",
         "tags": [
-          "buy"
+          "sales"
         ],
         "operationId": "buy",
         "parameters": [

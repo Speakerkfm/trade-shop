@@ -1,6 +1,6 @@
 get:
   tags:
-  - buy
+  - sales
   description: Купить лот
   operationId: buy
   responses:

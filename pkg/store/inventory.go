@@ -12,12 +12,13 @@ type Inventory struct {
 	Count  int64
 }
 
-func (st *Store) GetInventoryByUserId(userID uuid.UUID) ([]*models.Item, bool) {
+func (st *Store) GetInventoryByUserId(userID *uuid.UUID) ([]*models.Item, bool) {
 	var Items []*models.Item
 	err := st.gorm.Raw(`
 		select its.ID, its.name, i.count
 		from inventory i join items its 
-		on i.item_id = its.id`).Scan(&Items).Error
+		on i.item_id = its.id
+		where i.user_id = ?`, userID).Scan(&Items).Error
 
 	return Items, found(err)
 }

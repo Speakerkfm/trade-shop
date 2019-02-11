@@ -19,9 +19,9 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"trade-shop/pkg/restapi/operations/buy"
 	"trade-shop/pkg/restapi/operations/inventory"
 	"trade-shop/pkg/restapi/operations/login"
+	"trade-shop/pkg/restapi/operations/sale"
 	"trade-shop/pkg/restapi/operations/sales"
 )
 
@@ -42,8 +42,8 @@ func NewTradeShopAPI(spec *loads.Document) *TradeShopAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		JSONProducer:        runtime.JSONProducer(),
-		BuyBuyHandler: buy.BuyHandlerFunc(func(params buy.BuyParams) middleware.Responder {
-			return middleware.NotImplemented("operation BuyBuy has not yet been implemented")
+		SalesBuyHandler: sales.BuyHandlerFunc(func(params sales.BuyParams) middleware.Responder {
+			return middleware.NotImplemented("operation SalesBuy has not yet been implemented")
 		}),
 		InventoryInventoryHandler: inventory.InventoryHandlerFunc(func(params inventory.InventoryParams) middleware.Responder {
 			return middleware.NotImplemented("operation InventoryInventory has not yet been implemented")
@@ -51,8 +51,8 @@ func NewTradeShopAPI(spec *loads.Document) *TradeShopAPI {
 		LoginLoginHandler: login.LoginHandlerFunc(func(params login.LoginParams) middleware.Responder {
 			return middleware.NotImplemented("operation LoginLogin has not yet been implemented")
 		}),
-		LoginSaleHandler: login.SaleHandlerFunc(func(params login.SaleParams) middleware.Responder {
-			return middleware.NotImplemented("operation LoginSale has not yet been implemented")
+		SaleSaleHandler: sale.SaleHandlerFunc(func(params sale.SaleParams) middleware.Responder {
+			return middleware.NotImplemented("operation SaleSale has not yet been implemented")
 		}),
 		SalesSalesListHandler: sales.SalesListHandlerFunc(func(params sales.SalesListParams) middleware.Responder {
 			return middleware.NotImplemented("operation SalesSalesList has not yet been implemented")
@@ -88,14 +88,14 @@ type TradeShopAPI struct {
 	// JSONProducer registers a producer for a "application/json" mime type
 	JSONProducer runtime.Producer
 
-	// BuyBuyHandler sets the operation handler for the buy operation
-	BuyBuyHandler buy.BuyHandler
+	// SalesBuyHandler sets the operation handler for the buy operation
+	SalesBuyHandler sales.BuyHandler
 	// InventoryInventoryHandler sets the operation handler for the inventory operation
 	InventoryInventoryHandler inventory.InventoryHandler
 	// LoginLoginHandler sets the operation handler for the login operation
 	LoginLoginHandler login.LoginHandler
-	// LoginSaleHandler sets the operation handler for the sale operation
-	LoginSaleHandler login.SaleHandler
+	// SaleSaleHandler sets the operation handler for the sale operation
+	SaleSaleHandler sale.SaleHandler
 	// SalesSalesListHandler sets the operation handler for the sales list operation
 	SalesSalesListHandler sales.SalesListHandler
 
@@ -161,8 +161,8 @@ func (o *TradeShopAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.BuyBuyHandler == nil {
-		unregistered = append(unregistered, "buy.BuyHandler")
+	if o.SalesBuyHandler == nil {
+		unregistered = append(unregistered, "sales.BuyHandler")
 	}
 
 	if o.InventoryInventoryHandler == nil {
@@ -173,8 +173,8 @@ func (o *TradeShopAPI) Validate() error {
 		unregistered = append(unregistered, "login.LoginHandler")
 	}
 
-	if o.LoginSaleHandler == nil {
-		unregistered = append(unregistered, "login.SaleHandler")
+	if o.SaleSaleHandler == nil {
+		unregistered = append(unregistered, "sale.SaleHandler")
 	}
 
 	if o.SalesSalesListHandler == nil {
@@ -282,7 +282,7 @@ func (o *TradeShopAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/sales/{sale_id}/buy"] = buy.NewBuy(o.context, o.BuyBuyHandler)
+	o.handlers["GET"]["/sales/{sale_id}/buy"] = sales.NewBuy(o.context, o.SalesBuyHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -297,7 +297,7 @@ func (o *TradeShopAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/sale"] = login.NewSale(o.context, o.LoginSaleHandler)
+	o.handlers["POST"]["/sale"] = sale.NewSale(o.context, o.SaleSaleHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

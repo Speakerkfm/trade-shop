@@ -9,7 +9,7 @@ import (
 )
 
 type StoreInterface interface {
-	GetInventoryByUserId(userID uuid.UUID) ([]*models.Item, bool)
+	GetInventoryByUserId(userID *uuid.UUID) ([]*models.Item, bool)
 	CreateItemToUser(userID uuid.UUID, item *models.Item) bool
 	UpdateItemToUser(userID uuid.UUID, itemID uuid.UUID, newCount int) bool
 	DeleteItemFromUser(userID uuid.UUID, itemID uuid.UUID) bool

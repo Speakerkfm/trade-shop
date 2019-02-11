@@ -11,9 +11,9 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 
 	"trade-shop/pkg/restapi/operations"
-	"trade-shop/pkg/restapi/operations/buy"
 	"trade-shop/pkg/restapi/operations/inventory"
 	"trade-shop/pkg/restapi/operations/login"
+	"trade-shop/pkg/restapi/operations/sale"
 	"trade-shop/pkg/restapi/operations/sales"
 )
 
@@ -37,8 +37,8 @@ func configureAPI(api *operations.TradeShopAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	api.BuyBuyHandler = buy.BuyHandlerFunc(func(params buy.BuyParams) middleware.Responder {
-		return middleware.NotImplemented("operation buy.Buy has not yet been implemented")
+	api.SalesBuyHandler = sales.BuyHandlerFunc(func(params sales.BuyParams) middleware.Responder {
+		return middleware.NotImplemented("operation sales.Buy has not yet been implemented")
 	})
 	api.InventoryInventoryHandler = inventory.InventoryHandlerFunc(func(params inventory.InventoryParams) middleware.Responder {
 		return middleware.NotImplemented("operation inventory.Inventory has not yet been implemented")
@@ -46,8 +46,8 @@ func configureAPI(api *operations.TradeShopAPI) http.Handler {
 	api.LoginLoginHandler = login.LoginHandlerFunc(func(params login.LoginParams) middleware.Responder {
 		return middleware.NotImplemented("operation login.Login has not yet been implemented")
 	})
-	api.LoginSaleHandler = login.SaleHandlerFunc(func(params login.SaleParams) middleware.Responder {
-		return middleware.NotImplemented("operation login.Sale has not yet been implemented")
+	api.SaleSaleHandler = sale.SaleHandlerFunc(func(params sale.SaleParams) middleware.Responder {
+		return middleware.NotImplemented("operation sale.Sale has not yet been implemented")
 	})
 	api.SalesSalesListHandler = sales.SalesListHandlerFunc(func(params sales.SalesListParams) middleware.Responder {
 		return middleware.NotImplemented("operation sales.SalesList has not yet been implemented")
