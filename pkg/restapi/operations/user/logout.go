@@ -9,7 +9,7 @@ import (
 	"github.com/gorilla/sessions"
 	"net/http"
 
-	middleware "github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/runtime/middleware"
 )
 
 // LogoutHandlerFunc turns a function with the right signature into a logout handler

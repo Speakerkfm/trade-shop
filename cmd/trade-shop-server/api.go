@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gorilla/sessions"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/boj/redistore.v1"
 	"net/http"
@@ -47,9 +46,5 @@ func setupGlobalMiddleware(handler http.Handler) http.Handler {
 func sessionListener(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h.ServeHTTP(w, r)
-
-		if err := sessions.Save(r, w); err != nil {
-			panic(err)
-		}
 	})
 }
