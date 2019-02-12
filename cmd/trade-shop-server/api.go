@@ -18,6 +18,7 @@ import (
 
 func configureAPI(api *operations.TradeShopAPI, db *gorm.DB, rst *redistore.RediStore, conf *flags.Config) http.Handler {
 	st := store.NewStore(db)
+
 	salesService := service.NewSalesListService(st)
 	authService := service.NewAuthService(rst)
 

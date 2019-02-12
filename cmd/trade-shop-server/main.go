@@ -27,7 +27,7 @@ func main() {
 	server := restapi.NewServer(api)
 	defer server.Shutdown()
 
-	//load config
+	//config
 	conf := &pkg_flags.Config{}
 	configureFlags(api, server, swaggerSpec, conf)
 
@@ -46,6 +46,7 @@ func main() {
 	defer db.Close()
 	db.SingularTable(true)
 
+	//redistore
 	rstoreSize, _ := strconv.Atoi(conf.RedisStoreSize)
 	rstore, err := redistore.NewRediStore(
 		rstoreSize,
