@@ -9,6 +9,8 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime"
+
+	models "trade-shop/pkg/models"
 )
 
 // LogoutOKCode is the HTTP code returned for type LogoutOK
@@ -38,11 +40,16 @@ func (o *LogoutOK) WriteResponse(rw http.ResponseWriter, producer runtime.Produc
 // LogoutUnauthorizedCode is the HTTP code returned for type LogoutUnauthorized
 const LogoutUnauthorizedCode int = 401
 
-/*LogoutUnauthorized Пользователь не авторизован
+/*LogoutUnauthorized Пользователь не аутентифицирован в системе
 
 swagger:response logoutUnauthorized
 */
 type LogoutUnauthorized struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.ErrorResult `json:"body,omitempty"`
 }
 
 // NewLogoutUnauthorized creates LogoutUnauthorized with default headers values
@@ -51,10 +58,25 @@ func NewLogoutUnauthorized() *LogoutUnauthorized {
 	return &LogoutUnauthorized{}
 }
 
+// WithPayload adds the payload to the logout unauthorized response
+func (o *LogoutUnauthorized) WithPayload(payload *models.ErrorResult) *LogoutUnauthorized {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the logout unauthorized response
+func (o *LogoutUnauthorized) SetPayload(payload *models.ErrorResult) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *LogoutUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(401)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

@@ -9,6 +9,8 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime"
+
+	models "trade-shop/pkg/models"
 )
 
 // SaleOKCode is the HTTP code returned for type SaleOK
@@ -38,11 +40,16 @@ func (o *SaleOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer
 // SaleUnauthorizedCode is the HTTP code returned for type SaleUnauthorized
 const SaleUnauthorizedCode int = 401
 
-/*SaleUnauthorized Пользователь не авторизован
+/*SaleUnauthorized Пользователь не аутентифицирован в системе
 
 swagger:response saleUnauthorized
 */
 type SaleUnauthorized struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.ErrorResult `json:"body,omitempty"`
 }
 
 // NewSaleUnauthorized creates SaleUnauthorized with default headers values
@@ -51,10 +58,25 @@ func NewSaleUnauthorized() *SaleUnauthorized {
 	return &SaleUnauthorized{}
 }
 
+// WithPayload adds the payload to the sale unauthorized response
+func (o *SaleUnauthorized) WithPayload(payload *models.ErrorResult) *SaleUnauthorized {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the sale unauthorized response
+func (o *SaleUnauthorized) SetPayload(payload *models.ErrorResult) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *SaleUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(401)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

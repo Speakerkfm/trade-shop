@@ -63,11 +63,16 @@ func (o *InventoryOK) WriteResponse(rw http.ResponseWriter, producer runtime.Pro
 // InventoryUnauthorizedCode is the HTTP code returned for type InventoryUnauthorized
 const InventoryUnauthorizedCode int = 401
 
-/*InventoryUnauthorized Пользователь не авторизован
+/*InventoryUnauthorized Пользователь не аутентифицирован в системе
 
 swagger:response inventoryUnauthorized
 */
 type InventoryUnauthorized struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.ErrorResult `json:"body,omitempty"`
 }
 
 // NewInventoryUnauthorized creates InventoryUnauthorized with default headers values
@@ -76,10 +81,25 @@ func NewInventoryUnauthorized() *InventoryUnauthorized {
 	return &InventoryUnauthorized{}
 }
 
+// WithPayload adds the payload to the inventory unauthorized response
+func (o *InventoryUnauthorized) WithPayload(payload *models.ErrorResult) *InventoryUnauthorized {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the inventory unauthorized response
+func (o *InventoryUnauthorized) SetPayload(payload *models.ErrorResult) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *InventoryUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(401)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

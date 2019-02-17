@@ -6,7 +6,6 @@ package login
 // Editing this file might prove futile when you re-run the generate command
 
 import (
-	"github.com/gorilla/sessions"
 	"net/http"
 
 	middleware "github.com/go-openapi/runtime/middleware"
@@ -55,10 +54,6 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	res := o.Handler.Handle(Params) // actually handle the request
-
-	if err := sessions.Save(r, rw); err != nil {
-		panic(err)
-	}
 
 	o.Context.Respond(rw, r, route.Produces, route, res)
 

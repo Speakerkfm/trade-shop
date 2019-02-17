@@ -1,0 +1,22 @@
+ErrorResult:
+  description: Ответ API с ошибкой
+  type: object
+  properties:
+    error:
+      type: object
+      properties:
+        code:
+          description: HTTP-статус ответа
+          type: string
+          x-isnullable: false
+          example: 003-061
+        description:
+          description: Человекопонятное описание ошибки
+          type: string
+          x-isnullable: false
+          example: Object not found
+      required:
+      - code
+      - description
+  required:
+  - error

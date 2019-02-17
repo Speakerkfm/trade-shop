@@ -6,10 +6,9 @@ package user
 // Editing this file might prove futile when you re-run the generate command
 
 import (
-	"github.com/gorilla/sessions"
 	"net/http"
 
-	"github.com/go-openapi/runtime/middleware"
+	middleware "github.com/go-openapi/runtime/middleware"
 )
 
 // LogoutHandlerFunc turns a function with the right signature into a logout handler
@@ -53,10 +52,6 @@ func (o *Logout) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	res := o.Handler.Handle(Params) // actually handle the request
-
-	if err := sessions.Save(r, rw); err != nil {
-		panic(err)
-	}
 
 	o.Context.Respond(rw, r, route.Produces, route, res)
 

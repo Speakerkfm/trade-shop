@@ -75,7 +75,10 @@ func init() {
             }
           },
           "401": {
-            "description": "Wrong username or password"
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           }
         }
       }
@@ -98,7 +101,10 @@ func init() {
             }
           },
           "401": {
-            "description": "Пользователь не авторизован"
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           }
         }
       }
@@ -125,7 +131,10 @@ func init() {
             "description": "OK"
           },
           "401": {
-            "description": "Пользователь не авторизован"
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           }
         }
       }
@@ -148,7 +157,10 @@ func init() {
             }
           },
           "401": {
-            "description": "Пользователь не авторизован"
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           }
         }
       }
@@ -165,7 +177,10 @@ func init() {
             "description": "OK"
           },
           "401": {
-            "description": "Пользователь не авторизован"
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           }
         }
       }
@@ -182,13 +197,46 @@ func init() {
             "description": "OK"
           },
           "401": {
-            "description": "Пользователь не авторизован"
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           }
         }
       }
     }
   },
   "definitions": {
+    "errorResult": {
+      "description": "Ответ API с ошибкой",
+      "type": "object",
+      "required": [
+        "error"
+      ],
+      "properties": {
+        "error": {
+          "type": "object",
+          "required": [
+            "code",
+            "description"
+          ],
+          "properties": {
+            "code": {
+              "description": "HTTP-статус ответа",
+              "type": "string",
+              "x-isnullable": false,
+              "example": "003-061"
+            },
+            "description": {
+              "description": "Человекопонятное описание ошибки",
+              "type": "string",
+              "x-isnullable": false,
+              "example": "Object not found"
+            }
+          }
+        }
+      }
+    },
     "item": {
       "description": "Item",
       "type": "object",
@@ -303,7 +351,10 @@ func init() {
             }
           },
           "401": {
-            "description": "Wrong username or password"
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           }
         }
       }
@@ -326,7 +377,10 @@ func init() {
             }
           },
           "401": {
-            "description": "Пользователь не авторизован"
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           }
         }
       }
@@ -353,7 +407,10 @@ func init() {
             "description": "OK"
           },
           "401": {
-            "description": "Пользователь не авторизован"
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           }
         }
       }
@@ -376,7 +433,10 @@ func init() {
             }
           },
           "401": {
-            "description": "Пользователь не авторизован"
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           }
         }
       }
@@ -393,7 +453,10 @@ func init() {
             "description": "OK"
           },
           "401": {
-            "description": "Пользователь не авторизован"
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           }
         }
       }
@@ -410,13 +473,46 @@ func init() {
             "description": "OK"
           },
           "401": {
-            "description": "Пользователь не авторизован"
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           }
         }
       }
     }
   },
   "definitions": {
+    "errorResult": {
+      "description": "Ответ API с ошибкой",
+      "type": "object",
+      "required": [
+        "error"
+      ],
+      "properties": {
+        "error": {
+          "type": "object",
+          "required": [
+            "code",
+            "description"
+          ],
+          "properties": {
+            "code": {
+              "description": "HTTP-статус ответа",
+              "type": "string",
+              "x-isnullable": false,
+              "example": "003-061"
+            },
+            "description": {
+              "description": "Человекопонятное описание ошибки",
+              "type": "string",
+              "x-isnullable": false,
+              "example": "Object not found"
+            }
+          }
+        }
+      }
+    },
     "item": {
       "description": "Item",
       "type": "object",

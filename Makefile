@@ -4,7 +4,7 @@ run:
 
 swaggergen: flatten
 	rm -f pkg/restapi/configure_trade_shop.go
-	swagger generate server -f tmp/swagger.yaml -t pkg --exclude-main --skip-operations
+	swagger generate server -f tmp/swagger.yaml -t pkg --exclude-main
 
 flatten:
 	mkdir -p tmp

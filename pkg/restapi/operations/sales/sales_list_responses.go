@@ -63,11 +63,16 @@ func (o *SalesListOK) WriteResponse(rw http.ResponseWriter, producer runtime.Pro
 // SalesListUnauthorizedCode is the HTTP code returned for type SalesListUnauthorized
 const SalesListUnauthorizedCode int = 401
 
-/*SalesListUnauthorized Пользователь не авторизован
+/*SalesListUnauthorized Пользователь не аутентифицирован в системе
 
 swagger:response salesListUnauthorized
 */
 type SalesListUnauthorized struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.ErrorResult `json:"body,omitempty"`
 }
 
 // NewSalesListUnauthorized creates SalesListUnauthorized with default headers values
@@ -76,10 +81,25 @@ func NewSalesListUnauthorized() *SalesListUnauthorized {
 	return &SalesListUnauthorized{}
 }
 
+// WithPayload adds the payload to the sales list unauthorized response
+func (o *SalesListUnauthorized) WithPayload(payload *models.ErrorResult) *SalesListUnauthorized {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the sales list unauthorized response
+func (o *SalesListUnauthorized) SetPayload(payload *models.ErrorResult) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *SalesListUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(401)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

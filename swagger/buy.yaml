@@ -7,6 +7,6 @@ get:
     200:
       description: OK
     401:
-      $ref: './responses/response_401.yaml'
+      $ref: ./responses/response_401.yaml
   parameters:
     - $ref: './parameter/sale_id.yaml'

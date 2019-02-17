@@ -1,1 +1,12 @@
-description: Пользователь не авторизован
+description: Пользователь не аутентифицирован в системе
+schema:
+  $ref: '../def/error_result.yaml#/ErrorResult'
+example:
+  UnauthorizedException:
+    error:
+      code: 001
+      description: Wrong username or password
+  InactiveUserException:
+    error:
+      code: 002
+      description: Wrong access

@@ -10,6 +10,6 @@ post:
         Location:
           type: "string"
     401:
-      description: Wrong username or password
+      $ref: ./responses/response_401.yaml
   parameters:
     - $ref: './parameter/login_body.yaml'
