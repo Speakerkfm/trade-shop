@@ -1,6 +1,8 @@
 package store
 
 import (
+	"errors"
+	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
 )
 
@@ -11,9 +13,13 @@ type User struct {
 	Bill     float64
 }
 
+func (User) TableName() string {
+	return "users"
+}
+
 func (st *Store) UserByEmail(email string) (*User, bool) {
 	var user User
-	err := st.gorm.Table("users").First(&user, "email = ?", email).Error
+	err := st.gorm.First(&user, "email = ?", email).Error
 
 	return &user, found(err)
 }
@@ -24,11 +30,30 @@ func (u *User) PasswordValid(password string) bool {
 	return *u.Password == password
 }
 
-func (st *Store) UpdateUserBill(userID uuid.UUID, newBill float64) bool {
-	err := st.gorm.
-		Table("users").
-		Where("id = ?", userID.String()).
-		Updates(map[string]interface{}{"bill": newBill}).Error
+func (st *Store) AddMoneyToUser(db *gorm.DB, userID uuid.UUID, money float64) error {
+	user := User{ID: userID}
 
-	return found(err)
+	if err := db.First(&user).Error; err != nil {
+		return nil
+	}
+
+	user.Bill = user.Bill + money
+
+	return db.Save(&user).Error
+}
+
+func (st *Store) RemoveMoneyFromUser(db *gorm.DB, userID uuid.UUID, money float64) error {
+	user := User{ID: userID}
+
+	if err := db.First(&user).Error; err != nil {
+		return nil
+	}
+
+	if money > user.Bill {
+		return errors.New("NotEnoughMoney")
+	}
+
+	user.Bill = user.Bill - money
+
+	return db.Save(&user).Error
 }

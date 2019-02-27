@@ -1,4 +1,4 @@
-.PHONY: *
+.PHONY:*
 run:
 	export `cat .env` && https_proxy=http://localhost:8080 go run cmd/trade-shop-server/*.go  --scheme=http --port=8000
 
@@ -12,3 +12,6 @@ flatten:
 
 swaggerdoc: flatten
 	swagger serve -p 8095 -F swagger tmp/swagger.yaml
+
+store:
+	ifacemaker -f pkg/store -s Store -i StoreInterface -p store -o pkg/store/store_interface.go

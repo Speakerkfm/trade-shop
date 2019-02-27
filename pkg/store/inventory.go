@@ -1,55 +1,66 @@
 package store
 
 import (
+	"errors"
+	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
-	"trade-shop/pkg/models"
 )
 
 type Inventory struct {
-	UserID uuid.UUID `gorm:"column:user_id"`
-	ItemID uuid.UUID `gorm:"column:item_id"`
+	UserID uuid.UUID `gorm:"primary_key"`
+	ItemID uuid.UUID `gorm:"primary_key"`
 	Name   string    `gorm:"-"`
 	Count  int64
 }
 
-func (st *Store) GetInventoryByUserId(userID *uuid.UUID) ([]*models.Item, bool) {
-	var Items []*models.Item
-	err := st.gorm.Raw(`
-		select its.ID, its.name, i.count
+func (st *Store) GetInventoryByUserId(userID uuid.UUID) []*Inventory {
+	var Items []*Inventory
+	st.gorm.Raw(`
+		select i.user_id, i.item_id, its.name, i.count
 		from inventory i join items its 
 		on i.item_id = its.id
-		where i.user_id = ?`, userID).Scan(&Items).Error
+		where i.user_id = ?`, userID).Scan(&Items)
 
-	return Items, found(err)
+	return Items
 }
 
-func (st *Store) CreateItemToUser(userID uuid.UUID, item *models.Item) bool {
+func (st *Store) AddItemToUser(db *gorm.DB, userID uuid.UUID, item ItemSale) error {
 	inventory := Inventory{
 		UserID: userID,
-		ItemID: uuid.FromStringOrNil(item.ID.String()),
+		ItemID: item.ItemID,
 		Name:   item.Name,
-		Count:  item.Count,
 	}
 
-	err := st.gorm.Create(&inventory).Error
+	if err := db.First(&inventory).Error; notFound(err) {
+		inventory.Count = item.Count
 
-	return found(err)
+		return db.Create(&inventory).Error
+	}
+
+	inventory.Count = inventory.Count + item.Count
+
+	return db.Save(&inventory).Error
 }
 
-func (st *Store) UpdateItemToUser(userID uuid.UUID, itemID uuid.UUID, newCount int) bool {
-	err := st.gorm.
-		Table("inventory").
-		Where("user_id = ? and item_id = ?", userID.String(), itemID.String()).
-		Updates(map[string]interface{}{"count": newCount}).Error
+func (st *Store) RemoveItemFromUser(db *gorm.DB, userID uuid.UUID, itemID uuid.UUID, count int64) error {
+	inventory := Inventory{UserID: userID, ItemID: itemID}
 
-	return found(err)
-}
+	if err := db.First(&inventory).Error; err != nil {
+		return errors.New("NotEnoughItems")
+	}
 
-func (st *Store) DeleteItemFromUser(userID uuid.UUID, itemID uuid.UUID) bool {
-	err := st.gorm.
-		Table("inventory").
-		Where("user_id = ? and item_id = ?", userID, itemID).
-		Delete(&Inventory{}).Error
+	if inventory.Count < count {
+		return errors.New("NotEnoughItems")
+	}
 
-	return found(err)
+	if inventory.Count == count {
+		return db.Delete(&inventory).Error
+	}
+
+	if inventory.Count > count {
+		inventory.Count = inventory.Count - count
+		return db.Save(&inventory).Error
+	}
+
+	return nil
 }

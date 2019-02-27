@@ -1,58 +1,40 @@
 package store
 
 import (
+	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
 )
 
-type Sale struct {
+type Sales struct {
 	ID     uuid.UUID `gorm:"primary_key"`
 	UserID uuid.UUID `gorm:"column:user_id"`
 }
 
-func (st *Store) CreateNewSale(userID uuid.UUID) (uuid.UUID, bool) {
+func (s *Sales) BeforeCreate(scope *gorm.Scope) error {
 	id, _ := uuid.NewV4()
-	sale := Sale{
-		ID:     id,
+	return scope.SetColumn("id", id)
+}
+
+func (st *Store) CreateNewSale(db *gorm.DB, userID uuid.UUID) uuid.UUID {
+	sale := Sales{
 		UserID: uuid.FromStringOrNil(userID.String()),
 	}
 
-	err := st.gorm.Create(&sale).Error
-
-	return id, found(err)
-}
-
-func (st *Store) DeleteSaleBySaleID(saleID uuid.UUID) bool {
-	err := st.gorm.
-		Table("sales").
-		Where("sale_id = ?", saleID).
-		Delete(&Inventory{}).Error
-
-	return found(err)
-}
-
-/*
-func (st *Store) GetSellerBySaleID(saleID uuid.UUID) (uuid.UUID, error){
-	var sale Sale
-
-	err := st.gorm.Table("sales").First(&sale, "ID = ?", saleID).Error
-
-	return sale.UserID, err
-}
-
-func (st *Store) Purchase(userID uuid.UUID, saleID uuid.UUID) error {
-	sellerID, err := st.GetSellerBySaleID(saleID)
-	if err != nil {
+	if err := db.Create(&sale).Error; err != nil {
 		panic(err)
 	}
 
-	tx := st.gorm.Begin()
-
-	items, ok := st.GetItemsInSaleBySaleID(saleID)
-
-	if !ok {
-		tx.Rollback()
-		panic()
-	}
+	return sale.ID
 }
 
-*/
+func (st *Store) DeleteSaleBySaleID(db *gorm.DB, saleID uuid.UUID) error {
+	return db.Delete(&Sales{ID: saleID}).Error
+}
+
+func (st *Store) GetSellerBySaleID(saleID uuid.UUID) (uuid.UUID, error) {
+	var sale Sales
+
+	err := st.gorm.First(&sale, "ID = ?", saleID).Error
+
+	return sale.UserID, err
+}

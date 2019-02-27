@@ -130,6 +130,12 @@ func init() {
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Логическая ошибка",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
+          },
           "401": {
             "description": "Пользователь не аутентифицирован в системе",
             "schema": {
@@ -192,9 +198,29 @@ func init() {
           "sale"
         ],
         "operationId": "sale",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "description": "Список предметов на продажу",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/itemSale"
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Логическая ошибка",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           },
           "401": {
             "description": "Пользователь не аутентифицирован в системе",
@@ -251,6 +277,25 @@ func init() {
         },
         "name": {
           "type": "string"
+        }
+      }
+    },
+    "itemSale": {
+      "description": "Предметы на продажу",
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
         }
       }
     },
@@ -406,6 +451,12 @@ func init() {
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Логическая ошибка",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
+          },
           "401": {
             "description": "Пользователь не аутентифицирован в системе",
             "schema": {
@@ -468,9 +519,29 @@ func init() {
           "sale"
         ],
         "operationId": "sale",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "description": "Список предметов на продажу",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/itemSale"
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Логическая ошибка",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
           },
           "401": {
             "description": "Пользователь не аутентифицирован в системе",
@@ -527,6 +598,25 @@ func init() {
         },
         "name": {
           "type": "string"
+        }
+      }
+    },
+    "itemSale": {
+      "description": "Предметы на продажу",
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
         }
       }
     },

@@ -1,0 +1,8 @@
+schema:
+  description: Список предметов на продажу
+  type: array
+  items:
+    $ref: './parameter/item_sale.yaml'
+in: body
+name: body
+required: true

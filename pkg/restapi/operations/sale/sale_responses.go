@@ -37,6 +37,50 @@ func (o *SaleOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer
 	rw.WriteHeader(200)
 }
 
+// SaleBadRequestCode is the HTTP code returned for type SaleBadRequest
+const SaleBadRequestCode int = 400
+
+/*SaleBadRequest Логическая ошибка
+
+swagger:response saleBadRequest
+*/
+type SaleBadRequest struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.ErrorResult `json:"body,omitempty"`
+}
+
+// NewSaleBadRequest creates SaleBadRequest with default headers values
+func NewSaleBadRequest() *SaleBadRequest {
+
+	return &SaleBadRequest{}
+}
+
+// WithPayload adds the payload to the sale bad request response
+func (o *SaleBadRequest) WithPayload(payload *models.ErrorResult) *SaleBadRequest {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the sale bad request response
+func (o *SaleBadRequest) SetPayload(payload *models.ErrorResult) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *SaleBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(400)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // SaleUnauthorizedCode is the HTTP code returned for type SaleUnauthorized
 const SaleUnauthorizedCode int = 401
 

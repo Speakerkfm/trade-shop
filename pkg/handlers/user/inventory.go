@@ -6,12 +6,12 @@ import (
 )
 
 func (c *Context) GetInventoryList(params user.InventoryParams) middleware.Responder {
-	usr, ok := c.auth.GetUserAuth(params.HTTPRequest)
+	userID, ok := c.auth.GetUserAuth(params.HTTPRequest)
 	if !ok {
 		return user.NewInventoryUnauthorized()
 	}
 
-	inv, _ := c.st.GetInventoryByUserId(usr)
+	items := c.inv.GetInventoryJSON(*userID)
 
-	return user.NewInventoryOK().WithPayload(inv)
+	return user.NewInventoryOK().WithPayload(items)
 }

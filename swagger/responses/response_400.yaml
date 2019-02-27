@@ -1,0 +1,8 @@
+description: Логическая ошибка
+schema:
+  $ref: '../def/error_result.yaml#/ErrorResult'
+example:
+  UnauthorizedException:
+    error:
+      code: 003
+      description: Not enough items

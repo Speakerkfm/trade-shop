@@ -37,6 +37,50 @@ func (o *BuyOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer)
 	rw.WriteHeader(200)
 }
 
+// BuyBadRequestCode is the HTTP code returned for type BuyBadRequest
+const BuyBadRequestCode int = 400
+
+/*BuyBadRequest Логическая ошибка
+
+swagger:response buyBadRequest
+*/
+type BuyBadRequest struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.ErrorResult `json:"body,omitempty"`
+}
+
+// NewBuyBadRequest creates BuyBadRequest with default headers values
+func NewBuyBadRequest() *BuyBadRequest {
+
+	return &BuyBadRequest{}
+}
+
+// WithPayload adds the payload to the buy bad request response
+func (o *BuyBadRequest) WithPayload(payload *models.ErrorResult) *BuyBadRequest {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the buy bad request response
+func (o *BuyBadRequest) SetPayload(payload *models.ErrorResult) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *BuyBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(400)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // BuyUnauthorizedCode is the HTTP code returned for type BuyUnauthorized
 const BuyUnauthorizedCode int = 401
 

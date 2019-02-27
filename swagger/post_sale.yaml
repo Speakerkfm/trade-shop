@@ -3,8 +3,12 @@ post:
   - sale
   description: Продажа предмета пользователем
   operationId: sale
+  parameters:
+    - $ref: './parameter/sale_body.yaml'
   responses:
     200:
       description: OK
+    400:
+      $ref: './responses/response_400.yaml'
     401:
       $ref: './responses/response_401.yaml'

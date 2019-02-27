@@ -9,6 +9,7 @@ import (
 type Store struct {
 	codec *cache.Codec
 	gorm  *gorm.DB
+	tx    *gorm.DB
 }
 
 func NewStore(db *gorm.DB) *Store {
@@ -21,4 +22,8 @@ func NewStore(db *gorm.DB) *Store {
 		},
 	}
 	return &Store{gorm: db, codec: codec}
+}
+
+func (s *Store) CreateTransaction() *gorm.DB {
+	return s.gorm.Begin()
 }

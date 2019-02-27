@@ -1,6 +1,7 @@
 package store
 
 import (
+	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
 	"trade-shop/pkg/models"
 )
@@ -13,17 +14,17 @@ type ItemSale struct {
 	Price  float64
 }
 
-func (st *Store) GetSaleItemList() ([]ItemSale, bool) {
+func (st *Store) GetSaleItemList() ([]ItemSale, error) {
 	var ItemSales []ItemSale
 	err := st.gorm.Raw(`
 		select *
 		from item_sale i join items its 
 		on i.item_id = its.id`).Scan(&ItemSales).Error
 
-	return ItemSales, found(err)
+	return ItemSales, err
 }
 
-func (st *Store) GetItemsInSaleBySaleID(saleID uuid.UUID) ([]ItemSale, bool) {
+func (st *Store) GetItemsInSaleBySaleID(saleID uuid.UUID) ([]ItemSale, error) {
 	var ItemSales []ItemSale
 	err := st.gorm.Raw(`
 		select *
@@ -31,19 +32,14 @@ func (st *Store) GetItemsInSaleBySaleID(saleID uuid.UUID) ([]ItemSale, bool) {
 		on i.item_id = its.id
 		where i.sale_id = ?`, saleID).Scan(&ItemSales).Error
 
-	return ItemSales, found(err)
+	return ItemSales, err
 }
 
-func (st *Store) DeleteItemsInSaleBySaleID(saleID uuid.UUID) bool {
-	err := st.gorm.
-		Table("item_sale").
-		Where("sale_id = ?", saleID).
-		Delete(&ItemSale{}).Error
-
-	return found(err)
+func (st *Store) DeleteItemsInSale(db *gorm.DB, saleID uuid.UUID) error {
+	return db.Where("sale_id = ?", saleID).Delete(&ItemSale{}).Error
 }
 
-func (st *Store) AddItemToSale(saleID uuid.UUID, item *models.SaleItemsItems0) bool {
+func (st *Store) AddItemToSale(db *gorm.DB, saleID uuid.UUID, item *models.ItemSale) error {
 	itemSale := ItemSale{
 		SaleID: saleID,
 		ItemID: uuid.FromStringOrNil(item.ID.String()),
@@ -52,7 +48,7 @@ func (st *Store) AddItemToSale(saleID uuid.UUID, item *models.SaleItemsItems0) b
 		Price:  item.Price,
 	}
 
-	err := st.gorm.Create(&itemSale).Error
+	err := db.Create(&itemSale).Error
 
-	return found(err)
+	return err
 }
