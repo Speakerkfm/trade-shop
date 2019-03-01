@@ -12,6 +12,7 @@ import (
 	pkg_flags "trade-shop/pkg/flags"
 	"trade-shop/pkg/restapi"
 	"trade-shop/pkg/restapi/operations"
+	"trade-shop/pkg/service"
 
 	"github.com/go-openapi/loads"
 	"github.com/jessevdk/go-flags"
@@ -46,6 +47,10 @@ func main() {
 	defer db.Close()
 	db.SingularTable(true)
 
+	//rabit
+	amqpClient, err := service.NewQueue(conf)
+	defer amqpClient.Connection.Close()
+
 	//redistore
 	rstoreSize, _ := strconv.Atoi(conf.RedisStoreSize)
 	rstore, err := redistore.NewRediStore(
@@ -60,7 +65,7 @@ func main() {
 	defer rstore.Close()
 
 	//set handlers
-	handler := configureAPI(api, db, rstore, conf)
+	handler := configureAPI(api, db, rstore, amqpClient, conf)
 	server.SetHandler(handler)
 
 	if err := server.Serve(); err != nil {

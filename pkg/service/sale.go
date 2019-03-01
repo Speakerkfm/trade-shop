@@ -2,18 +2,28 @@
 package service
 
 import (
+	"fmt"
 	"github.com/go-openapi/strfmt"
 	"github.com/satori/go.uuid"
 	"trade-shop/pkg/models"
+	"trade-shop/pkg/service/serviceiface"
 	"trade-shop/pkg/store"
 )
 
+const (
+	typeEmailNotification = "email_notification"
+)
+
 type Sale struct {
-	st store.StoreInterface
+	st     store.StoreInterface
+	mailer serviceiface.Mailer
 }
 
-func NewSale(st store.StoreInterface) *Sale {
-	return &Sale{st: st}
+func NewSale(st store.StoreInterface, mailer serviceiface.Mailer) *Sale {
+	return &Sale{
+		st:     st,
+		mailer: mailer,
+	}
 }
 
 func (s *Sale) CreateLot(userID uuid.UUID, itemList []*models.ItemSale) error {
@@ -41,6 +51,11 @@ func (s *Sale) CreateLot(userID uuid.UUID, itemList []*models.ItemSale) error {
 }
 
 func (s *Sale) Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) error {
+	user, found := s.st.UserByUserID(userID)
+	if !found {
+		return fmt.Errorf("user not found")
+	}
+
 	itemList, err := s.st.GetItemsInSaleBySaleID(saleID)
 	if err != nil {
 		return err
@@ -85,12 +100,11 @@ func (s *Sale) Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) 
 
 	tx.Commit()
 
-	//TODO send notification to seller
-	return nil
+	return s.mailer.SendNotificationEmail(typeEmailNotification, *user.Email, itemList)
 }
 
-func (s *Sale) GetSalesListJSON() []*models.Sale {
-	salesList, _ := s.st.GetSaleItemList()
+func (s *Sale) GetSalesListJSON(userID uuid.UUID) []*models.Sale {
+	salesList, _ := s.st.GetSaleItemList(userID)
 
 	var salesBody []*models.Sale
 	var salesMap = make(map[uuid.UUID]int, len(salesList))

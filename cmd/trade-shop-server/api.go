@@ -10,22 +10,22 @@ import (
 	"trade-shop/pkg/handlers/user"
 	"trade-shop/pkg/restapi/operations"
 	loginApi "trade-shop/pkg/restapi/operations/login"
-	saleApi "trade-shop/pkg/restapi/operations/sale"
 	salesApi "trade-shop/pkg/restapi/operations/sales"
 	userApi "trade-shop/pkg/restapi/operations/user"
 	"trade-shop/pkg/service"
 	"trade-shop/pkg/store"
 )
 
-func configureAPI(api *operations.TradeShopAPI, db *gorm.DB, rst *redistore.RediStore, conf *flags.Config) http.Handler {
+func configureAPI(api *operations.TradeShopAPI, db *gorm.DB, rst *redistore.RediStore, amqpClient *service.Queue, conf *flags.Config) http.Handler {
 	st := store.NewStore(db)
+	mailer := service.NewMailer(amqpClient)
 
-	saleService := service.NewSale(st)
+	saleService := service.NewSale(st, mailer)
 	authService := service.NewAuthService(rst)
 	invService := service.NewInventory(st)
 
 	salesContext := sales.NewContext(st, saleService, authService)
-	api.SaleSaleHandler = saleApi.SaleHandlerFunc(salesContext.SaleItems)
+	api.SalesSaleHandler = salesApi.SaleHandlerFunc(salesContext.SaleItems)
 	api.SalesSalesListHandler = salesApi.SalesListHandlerFunc(salesContext.GetSalesList)
 	api.SalesBuyHandler = salesApi.BuyHandlerFunc(salesContext.BuyLot)
 

@@ -156,9 +156,19 @@ func init() {
           "200": {
             "description": "Inventory",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/item"
+              "type": "object",
+              "properties": {
+                "bill": {
+                  "description": "User's bill",
+                  "type": "number"
+                },
+                "items": {
+                  "description": "User's items",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/item"
+                  }
+                }
               }
             }
           },
@@ -195,7 +205,7 @@ func init() {
       "post": {
         "description": "Продажа предмета пользователем",
         "tags": [
-          "sale"
+          "sales"
         ],
         "operationId": "sale",
         "parameters": [
@@ -477,9 +487,19 @@ func init() {
           "200": {
             "description": "Inventory",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/item"
+              "type": "object",
+              "properties": {
+                "bill": {
+                  "description": "User's bill",
+                  "type": "number"
+                },
+                "items": {
+                  "description": "User's items",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/item"
+                  }
+                }
               }
             }
           },
@@ -516,7 +536,7 @@ func init() {
       "post": {
         "description": "Продажа предмета пользователем",
         "tags": [
-          "sale"
+          "sales"
         ],
         "operationId": "sale",
         "parameters": [

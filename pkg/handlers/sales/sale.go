@@ -3,18 +3,18 @@ package sales
 import (
 	"github.com/go-openapi/runtime/middleware"
 	"trade-shop/pkg/httperrors"
-	"trade-shop/pkg/restapi/operations/sale"
+	"trade-shop/pkg/restapi/operations/sales"
 )
 
-func (c *Context) SaleItems(params sale.SaleParams) middleware.Responder {
+func (c *Context) SaleItems(params sales.SaleParams) middleware.Responder {
 	userID, ok := c.auth.GetUserAuth(params.HTTPRequest)
 	if !ok {
-		return sale.NewSaleUnauthorized()
+		return sales.NewSaleUnauthorized()
 	}
 
 	if err := c.sale.CreateLot(*userID, params.Body); err != nil {
-		return sale.NewSaleBadRequest().WithPayload(&httperrors.NotEnoughItems)
+		return sales.NewSaleBadRequest().WithPayload(&httperrors.NotEnoughItems)
 	}
 
-	return sale.NewSaleOK()
+	return sales.NewSaleOK()
 }

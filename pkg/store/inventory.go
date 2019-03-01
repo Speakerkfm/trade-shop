@@ -1,7 +1,7 @@
 package store
 
 import (
-	"errors"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
 )
@@ -46,11 +46,11 @@ func (st *Store) RemoveItemFromUser(db *gorm.DB, userID uuid.UUID, itemID uuid.U
 	inventory := Inventory{UserID: userID, ItemID: itemID}
 
 	if err := db.First(&inventory).Error; err != nil {
-		return errors.New("NotEnoughItems")
+		return fmt.Errorf("not enough items")
 	}
 
 	if inventory.Count < count {
-		return errors.New("NotEnoughItems")
+		return fmt.Errorf("not enough items")
 	}
 
 	if inventory.Count == count {

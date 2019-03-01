@@ -1,6 +1,6 @@
 post:
   tags:
-  - sale
+  - sales
   description: Продажа предмета пользователем
   operationId: sale
   parameters:

@@ -20,7 +20,6 @@ import (
 	"github.com/go-openapi/swag"
 
 	"trade-shop/pkg/restapi/operations/login"
-	"trade-shop/pkg/restapi/operations/sale"
 	"trade-shop/pkg/restapi/operations/sales"
 	"trade-shop/pkg/restapi/operations/user"
 )
@@ -54,8 +53,8 @@ func NewTradeShopAPI(spec *loads.Document) *TradeShopAPI {
 		UserLogoutHandler: user.LogoutHandlerFunc(func(params user.LogoutParams) middleware.Responder {
 			return middleware.NotImplemented("operation UserLogout has not yet been implemented")
 		}),
-		SaleSaleHandler: sale.SaleHandlerFunc(func(params sale.SaleParams) middleware.Responder {
-			return middleware.NotImplemented("operation SaleSale has not yet been implemented")
+		SalesSaleHandler: sales.SaleHandlerFunc(func(params sales.SaleParams) middleware.Responder {
+			return middleware.NotImplemented("operation SalesSale has not yet been implemented")
 		}),
 		SalesSalesListHandler: sales.SalesListHandlerFunc(func(params sales.SalesListParams) middleware.Responder {
 			return middleware.NotImplemented("operation SalesSalesList has not yet been implemented")
@@ -99,8 +98,8 @@ type TradeShopAPI struct {
 	LoginLoginHandler login.LoginHandler
 	// UserLogoutHandler sets the operation handler for the logout operation
 	UserLogoutHandler user.LogoutHandler
-	// SaleSaleHandler sets the operation handler for the sale operation
-	SaleSaleHandler sale.SaleHandler
+	// SalesSaleHandler sets the operation handler for the sale operation
+	SalesSaleHandler sales.SaleHandler
 	// SalesSalesListHandler sets the operation handler for the sales list operation
 	SalesSalesListHandler sales.SalesListHandler
 
@@ -182,8 +181,8 @@ func (o *TradeShopAPI) Validate() error {
 		unregistered = append(unregistered, "user.LogoutHandler")
 	}
 
-	if o.SaleSaleHandler == nil {
-		unregistered = append(unregistered, "sale.SaleHandler")
+	if o.SalesSaleHandler == nil {
+		unregistered = append(unregistered, "sales.SaleHandler")
 	}
 
 	if o.SalesSalesListHandler == nil {
@@ -311,7 +310,7 @@ func (o *TradeShopAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/user/sale"] = sale.NewSale(o.context, o.SaleSaleHandler)
+	o.handlers["POST"]["/user/sale"] = sales.NewSale(o.context, o.SalesSaleHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

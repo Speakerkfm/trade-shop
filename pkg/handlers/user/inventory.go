@@ -12,6 +12,7 @@ func (c *Context) GetInventoryList(params user.InventoryParams) middleware.Respo
 	}
 
 	items := c.inv.GetInventoryJSON(*userID)
+	bill := c.st.GetUserBill(*userID)
 
-	return user.NewInventoryOK().WithPayload(items)
+	return user.NewInventoryOK().WithPayload(&user.InventoryOKBody{Bill: bill, Items: items})
 }

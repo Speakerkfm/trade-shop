@@ -1,7 +1,7 @@
 package store
 
 import (
-	"errors"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
 )
@@ -24,10 +24,27 @@ func (st *Store) UserByEmail(email string) (*User, bool) {
 	return &user, found(err)
 }
 
+func (st *Store) UserByUserID(userID uuid.UUID) (*User, bool) {
+	user := User{
+		ID: userID,
+	}
+	err := st.gorm.First(&user).Error
+
+	return &user, found(err)
+}
+
 func (u *User) PasswordValid(password string) bool {
 	//err := bcrypt.CompareHashAndPassword([]byte(*u.Password), []byte(password))
 	//return err == nil
 	return *u.Password == password
+}
+
+func (st *Store) GetUserBill(userID uuid.UUID) float64 {
+	user := User{ID: userID}
+
+	st.gorm.First(&user)
+
+	return user.Bill
 }
 
 func (st *Store) AddMoneyToUser(db *gorm.DB, userID uuid.UUID, money float64) error {
@@ -50,7 +67,7 @@ func (st *Store) RemoveMoneyFromUser(db *gorm.DB, userID uuid.UUID, money float6
 	}
 
 	if money > user.Bill {
-		return errors.New("NotEnoughMoney")
+		return fmt.Errorf("not enough money")
 	}
 
 	user.Bill = user.Bill - money

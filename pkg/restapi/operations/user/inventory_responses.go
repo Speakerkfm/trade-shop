@@ -25,7 +25,7 @@ type InventoryOK struct {
 	/*
 	  In: Body
 	*/
-	Payload []*models.Item `json:"body,omitempty"`
+	Payload *InventoryOKBody `json:"body,omitempty"`
 }
 
 // NewInventoryOK creates InventoryOK with default headers values
@@ -35,13 +35,13 @@ func NewInventoryOK() *InventoryOK {
 }
 
 // WithPayload adds the payload to the inventory o k response
-func (o *InventoryOK) WithPayload(payload []*models.Item) *InventoryOK {
+func (o *InventoryOK) WithPayload(payload *InventoryOKBody) *InventoryOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the inventory o k response
-func (o *InventoryOK) SetPayload(payload []*models.Item) {
+func (o *InventoryOK) SetPayload(payload *InventoryOKBody) {
 	o.Payload = payload
 }
 
@@ -49,15 +49,12 @@ func (o *InventoryOK) SetPayload(payload []*models.Item) {
 func (o *InventoryOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(200)
-	payload := o.Payload
-	if payload == nil {
-		payload = make([]*models.Item, 0, 50)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
 	}
-
-	if err := producer.Produce(rw, payload); err != nil {
-		panic(err) // let the recovery middleware deal with this
-	}
-
 }
 
 // InventoryUnauthorizedCode is the HTTP code returned for type InventoryUnauthorized

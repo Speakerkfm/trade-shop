@@ -12,7 +12,6 @@ import (
 
 	"trade-shop/pkg/restapi/operations"
 	"trade-shop/pkg/restapi/operations/login"
-	"trade-shop/pkg/restapi/operations/sale"
 	"trade-shop/pkg/restapi/operations/sales"
 	"trade-shop/pkg/restapi/operations/user"
 )
@@ -49,8 +48,8 @@ func configureAPI(api *operations.TradeShopAPI) http.Handler {
 	api.UserLogoutHandler = user.LogoutHandlerFunc(func(params user.LogoutParams) middleware.Responder {
 		return middleware.NotImplemented("operation user.Logout has not yet been implemented")
 	})
-	api.SaleSaleHandler = sale.SaleHandlerFunc(func(params sale.SaleParams) middleware.Responder {
-		return middleware.NotImplemented("operation sale.Sale has not yet been implemented")
+	api.SalesSaleHandler = sales.SaleHandlerFunc(func(params sales.SaleParams) middleware.Responder {
+		return middleware.NotImplemented("operation sales.Sale has not yet been implemented")
 	})
 	api.SalesSalesListHandler = sales.SalesListHandlerFunc(func(params sales.SalesListParams) middleware.Responder {
 		return middleware.NotImplemented("operation sales.SalesList has not yet been implemented")

@@ -7,19 +7,20 @@ import (
 )
 
 type ItemSale struct {
-	SaleID uuid.UUID `gorm:"column:sale_id"`
-	ItemID uuid.UUID `gorm:"column:item_id"`
-	Name   string    `gorm:"-"`
-	Count  int64
-	Price  float64
+	SellerID uuid.UUID `gorm:"-"`
+	SaleID   uuid.UUID `gorm:"column:sale_id"`
+	ItemID   uuid.UUID `gorm:"column:item_id"`
+	Name     string    `gorm:"-"`
+	Count    int64
+	Price    float64
 }
 
-func (st *Store) GetSaleItemList() ([]ItemSale, error) {
+func (st *Store) GetSaleItemList(userID uuid.UUID) ([]ItemSale, error) {
 	var ItemSales []ItemSale
 	err := st.gorm.Raw(`
-		select *
+		select s.user_id, i.sale_id, i.item_id, its.name, i.count, i.price
 		from item_sale i join items its 
-		on i.item_id = its.id`).Scan(&ItemSales).Error
+		on i.item_id = its.id join sales s on i.sale_id = s.id where s.user_id <> ?`, userID).Scan(&ItemSales).Error
 
 	return ItemSales, err
 }

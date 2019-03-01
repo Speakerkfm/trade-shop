@@ -14,7 +14,7 @@ type StoreInterface interface {
 	AddItemToUser(db *gorm.DB, userID uuid.UUID, item ItemSale) error
 	RemoveItemFromUser(db *gorm.DB, userID uuid.UUID, itemID uuid.UUID, count int64) error
 	GetItemByID(itemID uuid.UUID) (*Item, bool)
-	GetSaleItemList() ([]ItemSale, error)
+	GetSaleItemList(userID uuid.UUID) ([]ItemSale, error)
 	GetItemsInSaleBySaleID(saleID uuid.UUID) ([]ItemSale, error)
 	DeleteItemsInSale(db *gorm.DB, saleID uuid.UUID) error
 	AddItemToSale(db *gorm.DB, saleID uuid.UUID, item *models.ItemSale) error
@@ -23,6 +23,8 @@ type StoreInterface interface {
 	GetSellerBySaleID(saleID uuid.UUID) (uuid.UUID, error)
 	CreateTransaction() *gorm.DB
 	UserByEmail(email string) (*User, bool)
+	UserByUserID(userID uuid.UUID) (*User, bool)
+	GetUserBill(userID uuid.UUID) float64
 	AddMoneyToUser(db *gorm.DB, userID uuid.UUID, money float64) error
 	RemoveMoneyFromUser(db *gorm.DB, userID uuid.UUID, money float64) error
 }

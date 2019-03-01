@@ -7,8 +7,15 @@ get:
     200:
       description: Inventory
       schema:
-        type: array
-        items:
-          $ref: './parameter/item.yaml'
+        type: object
+        properties:
+          bill:
+            description: User's bill
+            type: number
+          items:
+            description: User's items
+            type: array
+            items:
+              $ref: './parameter/item.yaml'
     401:
       $ref: './responses/response_401.yaml'

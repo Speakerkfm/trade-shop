@@ -7,8 +7,14 @@ package user
 
 import (
 	"net/http"
+	"strconv"
 
+	errors "github.com/go-openapi/errors"
 	middleware "github.com/go-openapi/runtime/middleware"
+	strfmt "github.com/go-openapi/strfmt"
+	swag "github.com/go-openapi/swag"
+
+	models "trade-shop/pkg/models"
 )
 
 // InventoryHandlerFunc turns a function with the right signature into a inventory handler
@@ -55,4 +61,72 @@ func (o *Inventory) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	o.Context.Respond(rw, r, route.Produces, route, res)
 
+}
+
+// InventoryOKBody inventory o k body
+// swagger:model InventoryOKBody
+type InventoryOKBody struct {
+
+	// User's bill
+	Bill float64 `json:"bill,omitempty"`
+
+	// User's items
+	Items []*models.Item `json:"items"`
+}
+
+// Validate validates this inventory o k body
+func (o *InventoryOKBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateItems(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *InventoryOKBody) validateItems(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Items) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(o.Items); i++ {
+		if swag.IsZero(o.Items[i]) { // not required
+			continue
+		}
+
+		if o.Items[i] != nil {
+			if err := o.Items[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("inventoryOK" + "." + "items" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *InventoryOKBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *InventoryOKBody) UnmarshalBinary(b []byte) error {
+	var res InventoryOKBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
 }

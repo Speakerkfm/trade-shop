@@ -6,8 +6,10 @@ import (
 )
 
 func (c *Context) GetSalesList(params sales.SalesListParams) middleware.Responder {
-	if _, ok := c.auth.GetUserAuth(params.HTTPRequest); !ok {
-		return sales.NewSalesListUnauthorized()
+	userID, ok := c.auth.GetUserAuth(params.HTTPRequest)
+	if !ok {
+		return sales.NewBuyUnauthorized()
 	}
-	return sales.NewSalesListOK().WithPayload(c.sale.GetSalesListJSON())
+
+	return sales.NewSalesListOK().WithPayload(c.sale.GetSalesListJSON(*userID))
 }
