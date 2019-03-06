@@ -68,7 +68,7 @@ func (o *Inventory) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 type InventoryOKBody struct {
 
 	// User's bill
-	Bill float64 `json:"bill,omitempty"`
+	Bill string `json:"bill,omitempty"`
 
 	// User's items
 	Items []*models.Item `json:"items"`

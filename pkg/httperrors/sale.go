@@ -17,7 +17,12 @@ var LotOwner = models.ErrorResult{Error: &models.ErrorResultError{
 	Description: "You can't buy your lot",
 }}
 
+var LotDoesNotExist = models.ErrorResult{Error: &models.ErrorResultError{
+	Code:        "005",
+	Description: "This lot does not exist",
+}}
+
 var NotEnoughMoney = models.ErrorResult{Error: &models.ErrorResultError{
-	Code:        "003",
+	Code:        "006",
 	Description: "Not enough money",
 }}

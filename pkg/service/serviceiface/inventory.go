@@ -9,5 +9,5 @@ import (
 )
 
 type Inventory interface {
-	GetInventoryJSON(userID uuid.UUID) []*models.Item
+	MakeInventory(userID uuid.UUID) []*models.Item
 }

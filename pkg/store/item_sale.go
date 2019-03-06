@@ -15,8 +15,8 @@ type ItemSale struct {
 	Price    float64
 }
 
-func (st *Store) GetSaleItemList(userID uuid.UUID) ([]ItemSale, error) {
-	var ItemSales []ItemSale
+func (st *Store) GetSaleItemList(userID uuid.UUID) ([]*ItemSale, error) {
+	var ItemSales []*ItemSale
 	err := st.gorm.Raw(`
 		select s.user_id, i.sale_id, i.item_id, its.name, i.count, i.price
 		from item_sale i join items its 
@@ -25,8 +25,8 @@ func (st *Store) GetSaleItemList(userID uuid.UUID) ([]ItemSale, error) {
 	return ItemSales, err
 }
 
-func (st *Store) GetItemsInSaleBySaleID(saleID uuid.UUID) ([]ItemSale, error) {
-	var ItemSales []ItemSale
+func (st *Store) GetItemsInSaleBySaleID(saleID uuid.UUID) ([]*ItemSale, error) {
+	var ItemSales []*ItemSale
 	err := st.gorm.Raw(`
 		select *
 		from item_sale i join items its 

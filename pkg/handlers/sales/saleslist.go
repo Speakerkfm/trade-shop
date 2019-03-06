@@ -11,5 +11,5 @@ func (c *Context) GetSalesList(params sales.SalesListParams) middleware.Responde
 		return sales.NewBuyUnauthorized()
 	}
 
-	return sales.NewSalesListOK().WithPayload(c.sale.GetSalesListJSON(*userID))
+	return sales.NewSalesListOK().WithPayload(c.sale.MakeSalesList(*userID))
 }

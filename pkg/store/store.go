@@ -2,6 +2,7 @@ package store
 
 import (
 	"github.com/go-redis/cache"
+	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/vmihailenco/msgpack"
 )
@@ -12,8 +13,10 @@ type Store struct {
 	tx    *gorm.DB
 }
 
-func NewStore(db *gorm.DB) *Store {
+func NewStore(db *gorm.DB, redisClient *redis.Client) *Store {
 	codec := &cache.Codec{
+		Redis: redisClient,
+
 		Marshal: func(v interface{}) ([]byte, error) {
 			return msgpack.Marshal(v)
 		},

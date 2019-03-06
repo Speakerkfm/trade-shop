@@ -6,6 +6,10 @@ import (
 	"trade-shop/pkg/store"
 )
 
+const (
+	typeEmailNotification = "email_notification"
+)
+
 type Message struct {
 	EmailTo   string                 `json:"email"`
 	EmailType string                 `json:"email_type"`
@@ -20,10 +24,10 @@ func NewMailer(amqp *Queue) *Mailer {
 	return &Mailer{amqpService: amqp}
 }
 
-func (mailer *Mailer) SendNotificationEmail(emailType string, to string, itemList []store.ItemSale) error {
+func (mailer *Mailer) SendNotificationEmail(to string, itemList []*store.ItemSale) error {
 	msg := Message{
 		EmailTo:   to,
-		EmailType: emailType,
+		EmailType: typeEmailNotification,
 		Data:      map[string]interface{}{"items": itemList},
 	}
 

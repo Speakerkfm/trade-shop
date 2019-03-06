@@ -12,9 +12,10 @@ func (c *Context) SaleItems(params sales.SaleParams) middleware.Responder {
 		return sales.NewSaleUnauthorized()
 	}
 
-	if err := c.sale.CreateLot(*userID, params.Body); err != nil {
+	switch err := c.sale.CreateLot(*userID, params.Body); err.Error() {
+	case "not enough items":
 		return sales.NewSaleBadRequest().WithPayload(&httperrors.NotEnoughItems)
+	default:
+		return sales.NewSaleOK()
 	}
-
-	return sales.NewSaleOK()
 }

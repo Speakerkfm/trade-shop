@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/go-openapi/swag"
+	"github.com/go-redis/redis"
 	"github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/boj/redistore.v1"
@@ -51,6 +52,13 @@ func main() {
 	amqpClient, err := service.NewQueue(conf)
 	defer amqpClient.Connection.Close()
 
+	//redis
+	redisOpt := redis.Options{Addr: conf.RedisHost}
+	redisClient := redis.NewClient(&redisOpt)
+	if _, err := redisClient.Ping().Result(); err != nil {
+		panic(err)
+	}
+
 	//redistore
 	rstoreSize, _ := strconv.Atoi(conf.RedisStoreSize)
 	rstore, err := redistore.NewRediStore(
@@ -65,7 +73,7 @@ func main() {
 	defer rstore.Close()
 
 	//set handlers
-	handler := configureAPI(api, db, rstore, amqpClient, conf)
+	handler := configureAPI(api, db, redisClient, rstore, amqpClient, conf)
 	server.SetHandler(handler)
 
 	if err := server.Serve(); err != nil {

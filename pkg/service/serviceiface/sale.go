@@ -11,5 +11,5 @@ import (
 type Sale interface {
 	CreateLot(userID uuid.UUID, itemList []*models.ItemSale) error
 	Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) error
-	GetSalesListJSON(userID uuid.UUID) []*models.Sale
+	MakeSalesList(userID uuid.UUID) []*models.Sale
 }

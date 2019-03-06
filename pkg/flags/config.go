@@ -6,6 +6,7 @@ type Config struct {
 	DatabaseName     string `long:"database-name" env:"DATABASE_NAME" required:"true"`
 	DatabaseUser     string `long:"database-user" env:"DATABASE_USER" required:"true"`
 	DatabasePassword string `long:"database-password" env:"DATABASE_PASSWORD" required:"true"`
+	RedisHost        string `long:"redis-host" env:"REDIS_HOST" required:"true"`
 
 	RedisStoreSize     string `long:"redis-store-size" env:"REDIS_STORE_SIZE" default:"10"`
 	RedisStoreHost     string `long:"redis-store-host" env:"REDIS_STORE_HOST" required:"true"`

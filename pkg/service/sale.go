@@ -5,13 +5,10 @@ import (
 	"fmt"
 	"github.com/go-openapi/strfmt"
 	"github.com/satori/go.uuid"
+	"strconv"
 	"trade-shop/pkg/models"
 	"trade-shop/pkg/service/serviceiface"
 	"trade-shop/pkg/store"
-)
-
-const (
-	typeEmailNotification = "email_notification"
 )
 
 type Sale struct {
@@ -27,6 +24,8 @@ func NewSale(st store.StoreInterface, mailer serviceiface.Mailer) *Sale {
 }
 
 func (s *Sale) CreateLot(userID uuid.UUID, itemList []*models.ItemSale) error {
+	s.st.ClearInventoryCache(userID)
+
 	tx := s.st.CreateTransaction()
 
 	saleID := s.st.CreateNewSale(tx, userID)
@@ -56,6 +55,9 @@ func (s *Sale) Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) 
 		return fmt.Errorf("user not found")
 	}
 
+	s.st.ClearInventoryCache(userID)
+	s.st.ClearInventoryCache(sellerID)
+
 	itemList, err := s.st.GetItemsInSaleBySaleID(saleID)
 	if err != nil {
 		return err
@@ -72,6 +74,10 @@ func (s *Sale) Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) 
 
 			return err
 		}
+	}
+
+	if money, err = strconv.ParseFloat(fmt.Sprintf("%.2f", money), 64); err != nil {
+		panic(err)
 	}
 
 	if err := s.st.RemoveMoneyFromUser(tx, userID, money); err != nil {
@@ -100,11 +106,15 @@ func (s *Sale) Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) 
 
 	tx.Commit()
 
-	return s.mailer.SendNotificationEmail(typeEmailNotification, *user.Email, itemList)
+	return s.mailer.SendNotificationEmail(*user.Email, itemList)
 }
 
-func (s *Sale) GetSalesListJSON(userID uuid.UUID) []*models.Sale {
-	salesList, _ := s.st.GetSaleItemList(userID)
+func (s *Sale) MakeSalesList(userID uuid.UUID) []*models.Sale {
+	var err error
+	salesList, err := s.st.GetSaleItemList(userID)
+	if err != nil {
+		panic(err)
+	}
 
 	var salesBody []*models.Sale
 	var salesMap = make(map[uuid.UUID]int, len(salesList))
@@ -128,6 +138,10 @@ func (s *Sale) GetSalesListJSON(userID uuid.UUID) []*models.Sale {
 		val, _ := salesMap[salesList[idx].SaleID]
 		salesBody[val].Items = append(salesBody[val].Items, item)
 		salesBody[val].TotalCount += item.Price * float64(item.Count)
+
+		if salesBody[val].TotalCount, err = strconv.ParseFloat(fmt.Sprintf("%.2f", salesBody[val].TotalCount), 64); err != nil {
+			panic(err)
+		}
 	}
 
 	return salesBody

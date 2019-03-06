@@ -160,7 +160,7 @@ func init() {
               "properties": {
                 "bill": {
                   "description": "User's bill",
-                  "type": "number"
+                  "type": "string"
                 },
                 "items": {
                   "description": "User's items",
@@ -491,7 +491,7 @@ func init() {
               "properties": {
                 "bill": {
                   "description": "User's bill",
-                  "type": "number"
+                  "type": "string"
                 },
                 "items": {
                   "description": "User's items",

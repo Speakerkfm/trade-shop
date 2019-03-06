@@ -16,7 +16,7 @@ func NewInventory(st store.StoreInterface) *Inventory {
 	return &Inventory{st: st}
 }
 
-func (i *Inventory) GetInventoryJSON(userID uuid.UUID) []*models.Item {
+func (i *Inventory) MakeInventory(userID uuid.UUID) []*models.Item {
 	inventory := i.st.GetInventoryByUserId(userID)
 
 	var items []*models.Item

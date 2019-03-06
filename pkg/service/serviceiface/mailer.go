@@ -2,8 +2,10 @@
 
 package serviceiface
 
-import "trade-shop/pkg/store"
+import (
+	"trade-shop/pkg/store"
+)
 
 type Mailer interface {
-	SendNotificationEmail(emailType string, to string, itemList []store.ItemSale) error
+	SendNotificationEmail(to string, itemList []*store.ItemSale) error
 }

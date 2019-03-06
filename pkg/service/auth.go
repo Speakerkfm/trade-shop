@@ -2,15 +2,15 @@ package service
 
 import (
 	"github.com/satori/go.uuid"
-	"gopkg.in/boj/redistore.v1"
 	"net/http"
+	"trade-shop/pkg/service/serviceiface"
 )
 
 type AuthService struct {
-	rst *redistore.RediStore
+	rst serviceiface.RediStore
 }
 
-func NewAuthService(rst *redistore.RediStore) *AuthService {
+func NewAuthService(rst serviceiface.RediStore) *AuthService {
 	as := &AuthService{
 		rst: rst,
 	}

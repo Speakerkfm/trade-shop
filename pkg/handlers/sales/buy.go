@@ -15,7 +15,7 @@ func (c *Context) BuyLot(params sales.BuyParams) middleware.Responder {
 
 	sellerID, err := c.st.GetSellerBySaleID(uuid.FromStringOrNil(params.SaleID.String()))
 	if err != nil {
-		return sales.NewBuyBadRequest().WithPayload(&httperrors.DefaultError)
+		return sales.NewBuyBadRequest().WithPayload(&httperrors.LotDoesNotExist)
 	}
 
 	if sellerID == *userID {

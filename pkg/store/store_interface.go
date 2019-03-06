@@ -11,11 +11,12 @@ import (
 
 type StoreInterface interface {
 	GetInventoryByUserId(userID uuid.UUID) []*Inventory
-	AddItemToUser(db *gorm.DB, userID uuid.UUID, item ItemSale) error
+	ClearInventoryCache(userID uuid.UUID)
+	AddItemToUser(db *gorm.DB, userID uuid.UUID, item *ItemSale) error
 	RemoveItemFromUser(db *gorm.DB, userID uuid.UUID, itemID uuid.UUID, count int64) error
 	GetItemByID(itemID uuid.UUID) (*Item, bool)
-	GetSaleItemList(userID uuid.UUID) ([]ItemSale, error)
-	GetItemsInSaleBySaleID(saleID uuid.UUID) ([]ItemSale, error)
+	GetSaleItemList(userID uuid.UUID) ([]*ItemSale, error)
+	GetItemsInSaleBySaleID(saleID uuid.UUID) ([]*ItemSale, error)
 	DeleteItemsInSale(db *gorm.DB, saleID uuid.UUID) error
 	AddItemToSale(db *gorm.DB, saleID uuid.UUID, item *models.ItemSale) error
 	CreateNewSale(db *gorm.DB, userID uuid.UUID) uuid.UUID

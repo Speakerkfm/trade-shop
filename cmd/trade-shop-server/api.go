@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/boj/redistore.v1"
 	"net/http"
@@ -16,8 +17,8 @@ import (
 	"trade-shop/pkg/store"
 )
 
-func configureAPI(api *operations.TradeShopAPI, db *gorm.DB, rst *redistore.RediStore, amqpClient *service.Queue, conf *flags.Config) http.Handler {
-	st := store.NewStore(db)
+func configureAPI(api *operations.TradeShopAPI, db *gorm.DB, redisClient *redis.Client, rst *redistore.RediStore, amqpClient *service.Queue, conf *flags.Config) http.Handler {
+	st := store.NewStore(db, redisClient)
 	mailer := service.NewMailer(amqpClient)
 
 	saleService := service.NewSale(st, mailer)
