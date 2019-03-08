@@ -55,7 +55,6 @@ func (st *Store) AddItemToUser(db *gorm.DB, userID uuid.UUID, item *ItemSale) er
 	inventory := Inventory{
 		UserID: userID,
 		ItemID: item.ItemID,
-		Name:   item.Name,
 	}
 
 	if err := db.First(&inventory).Error; notFound(err) {

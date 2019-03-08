@@ -14,7 +14,6 @@ type StoreInterface interface {
 	ClearInventoryCache(userID uuid.UUID)
 	AddItemToUser(db *gorm.DB, userID uuid.UUID, item *ItemSale) error
 	RemoveItemFromUser(db *gorm.DB, userID uuid.UUID, itemID uuid.UUID, count int64) error
-	GetItemByID(itemID uuid.UUID) (*Item, bool)
 	GetSaleItemList(userID uuid.UUID) ([]*ItemSale, error)
 	GetItemsInSaleBySaleID(saleID uuid.UUID) ([]*ItemSale, error)
 	DeleteItemsInSale(db *gorm.DB, saleID uuid.UUID) error
@@ -23,6 +22,8 @@ type StoreInterface interface {
 	DeleteSaleBySaleID(db *gorm.DB, saleID uuid.UUID) error
 	GetSellerBySaleID(saleID uuid.UUID) (uuid.UUID, error)
 	CreateTransaction() *gorm.DB
+	CommitTransaction(tx *gorm.DB)
+	RollbackTransaction(tx *gorm.DB)
 	UserByEmail(email string) (*User, bool)
 	UserByUserID(userID uuid.UUID) (*User, bool)
 	GetUserBill(userID uuid.UUID) float64

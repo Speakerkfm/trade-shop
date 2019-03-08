@@ -14,7 +14,7 @@ paths:
   /user/logout:
     $ref: './logout.yaml'
   /user/inventory:
-    $ref: './inventory.yaml'
+    $ref: './user_inventory.yaml'
   /user/sale:
     $ref: './post_sale.yaml'
   /sales:

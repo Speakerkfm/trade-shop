@@ -1,0 +1,23 @@
+-
+  sale_id: 332d3e06-c05a-429b-892b-2f6ce064ee34
+  item_id: a5630737-636c-454c-826f-3002aaf46376
+  count: 3
+  price: 50.5
+
+-
+  sale_id: 332d3e06-c05a-429b-892b-2f6ce064ee34
+  item_id: ad663316-7a59-48f2-8b15-e4f99573ebc0
+  count: 1
+  price: 10.0
+
+-
+  sale_id: 59f1640e-b4f4-41dd-879f-17392a54419b
+  item_id: a5630737-636c-454c-826f-3002aaf46376
+  count: 30
+  price: 30.3
+
+-
+  sale_id: 030e212f-99d7-4329-a69f-f7613d30a499
+  item_id: ad663316-7a59-48f2-8b15-e4f99573ebc0
+  count: 4
+  price: 15.9

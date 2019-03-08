@@ -30,3 +30,11 @@ func NewStore(db *gorm.DB, redisClient *redis.Client) *Store {
 func (s *Store) CreateTransaction() *gorm.DB {
 	return s.gorm.Begin()
 }
+
+func (s *Store) CommitTransaction(tx *gorm.DB) {
+	tx.Commit()
+}
+
+func (s *Store) RollbackTransaction(tx *gorm.DB) {
+	tx.Rollback()
+}

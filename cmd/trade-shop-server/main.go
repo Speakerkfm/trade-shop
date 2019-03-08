@@ -45,11 +45,17 @@ func main() {
 	mysqlConf.Loc = time.Local
 
 	db, err := gorm.Open("mysql", mysqlConf.FormatDSN())
+	if err != nil {
+		panic(err)
+	}
 	defer db.Close()
 	db.SingularTable(true)
 
 	//rabit
 	amqpClient, err := service.NewQueue(conf)
+	if err != nil {
+		panic(err)
+	}
 	defer amqpClient.Connection.Close()
 
 	//redis

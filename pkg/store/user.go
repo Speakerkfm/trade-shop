@@ -8,8 +8,8 @@ import (
 
 type User struct {
 	ID       uuid.UUID `gorm:"primary_key"`
-	Email    *string
-	Password *string
+	Email    string
+	Password string
 	Bill     float64
 }
 
@@ -36,7 +36,7 @@ func (st *Store) UserByUserID(userID uuid.UUID) (*User, bool) {
 func (u *User) PasswordValid(password string) bool {
 	//err := bcrypt.CompareHashAndPassword([]byte(*u.Password), []byte(password))
 	//return err == nil
-	return *u.Password == password
+	return u.Password == password
 }
 
 func (st *Store) GetUserBill(userID uuid.UUID) float64 {

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/go-openapi/strfmt"
 	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
@@ -15,12 +16,15 @@ func TestSale_CreateLot(t *testing.T) {
 	stI := mocks.StoreInterface{}
 	mailer := mocks.Mailer{}
 
-	sl := NewSale(&stI, &mailer)
+	sl := &Sale{&stI, &mailer}
 
-	sID, _ := uuid.NewV4()
-	uID, _ := uuid.NewV4()
+	sID1, _ := uuid.NewV4()
+	uID1, _ := uuid.NewV4()
+	sID2, _ := uuid.NewV4()
+	uID2, _ := uuid.NewV4()
 	iID1, _ := uuid.NewV4()
 	iID2, _ := uuid.NewV4()
+	errNotEnough := fmt.Errorf("not enough items")
 
 	cases := map[string]struct {
 		userID   uuid.UUID
@@ -30,14 +34,24 @@ func TestSale_CreateLot(t *testing.T) {
 		err      []error
 	}{
 		"sale with 2 items": {
-			userID: uID,
-			saleID: sID,
+			userID: uID1,
+			saleID: sID1,
 			itemList: []*models.ItemSale{
 				{ID: strfmt.UUID(iID1.String()), Name: "item1", Count: 3, Price: 12.20},
 				{ID: strfmt.UUID(iID2.String()), Name: "item2", Count: 5, Price: 5.20},
 			},
 			tx:  &gorm.DB{},
 			err: []error{nil, nil},
+		},
+		"sale with not enough items": {
+			userID: uID2,
+			saleID: sID2,
+			itemList: []*models.ItemSale{
+				{ID: strfmt.UUID(iID1.String()), Name: "item1", Count: 300, Price: 12.20},
+				{ID: strfmt.UUID(iID2.String()), Name: "item2", Count: 5, Price: 5.20},
+			},
+			tx:  &gorm.DB{},
+			err: []error{errNotEnough, nil},
 		},
 	}
 
@@ -60,6 +74,12 @@ func TestSale_CreateLot(t *testing.T) {
 			}
 		}
 
+		if wasError == nil {
+			stI.On("CommitTransaction", test.tx)
+		} else {
+			stI.On("RollbackTransaction", test.tx)
+		}
+
 		err := sl.CreateLot(test.userID, test.itemList)
 		assert.True(t, err == wasError)
 	}
@@ -76,7 +96,6 @@ func TestSale_Purchase(t *testing.T) {
 	uID, _ := uuid.NewV4()
 	iID1, _ := uuid.NewV4()
 	iID2, _ := uuid.NewV4()
-	email := "asdf@mail.com"
 
 	cases := map[string]struct {
 		userID   uuid.UUID
@@ -93,7 +112,7 @@ func TestSale_Purchase(t *testing.T) {
 			sellerID: slID,
 			saleID:   sID,
 			user: &store.User{
-				Email: &email,
+				Email: "asdf@mail.com",
 			},
 			itemList: []*store.ItemSale{
 				{SellerID: sID, SaleID: slID, ItemID: iID1, Name: "item1", Count: 3, Price: 12.20},
@@ -119,7 +138,13 @@ func TestSale_Purchase(t *testing.T) {
 		stI.On("AddMoneyToUser", test.tx, test.sellerID, test.money).Return(nil)
 		stI.On("DeleteItemsInSale", test.tx, test.saleID).Return(nil)
 		stI.On("DeleteSaleBySaleID", test.tx, test.saleID).Return(nil)
-		mailer.On("SendNotificationEmail", *test.user.Email, test.itemList).Return(nil)
+		mailer.On("SendNotificationEmail", test.user.Email, test.itemList).Return(nil)
+
+		if test.err == nil {
+			stI.On("CommitTransaction", test.tx)
+		} else {
+			stI.On("RollbackTransaction", test.tx)
+		}
 
 		err := sl.Purchase(test.userID, test.sellerID, test.saleID)
 		assert.True(t, err == test.err)

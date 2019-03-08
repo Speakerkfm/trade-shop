@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/go-openapi/strfmt"
 	"github.com/satori/go.uuid"
-	"strconv"
 	"trade-shop/pkg/models"
 	"trade-shop/pkg/service/serviceiface"
 	"trade-shop/pkg/store"
@@ -32,19 +31,19 @@ func (s *Sale) CreateLot(userID uuid.UUID, itemList []*models.ItemSale) error {
 
 	for _, val := range itemList {
 		if err := s.st.RemoveItemFromUser(tx, userID, uuid.FromStringOrNil(val.ID.String()), val.Count); err != nil {
-			tx.Rollback()
+			s.st.RollbackTransaction(tx)
 
 			return err
 		}
 
 		if err := s.st.AddItemToSale(tx, saleID, val); err != nil {
-			tx.Rollback()
+			s.st.RollbackTransaction(tx)
 
 			return err
 		}
 	}
 
-	tx.Commit()
+	s.st.CommitTransaction(tx)
 
 	return nil
 }
@@ -70,43 +69,43 @@ func (s *Sale) Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) 
 		money = money + (val.Price * float64(val.Count))
 
 		if err := s.st.AddItemToUser(tx, userID, val); err != nil {
-			tx.Rollback()
+			s.st.RollbackTransaction(tx)
 
 			return err
 		}
 	}
 
-	if money, err = strconv.ParseFloat(fmt.Sprintf("%.2f", money), 64); err != nil {
+	if money, err = formatFloat(money); err != nil {
 		panic(err)
 	}
 
 	if err := s.st.RemoveMoneyFromUser(tx, userID, money); err != nil {
-		tx.Rollback()
+		s.st.RollbackTransaction(tx)
 
 		return err
 	}
 
 	if err := s.st.AddMoneyToUser(tx, sellerID, money); err != nil {
-		tx.Rollback()
+		s.st.RollbackTransaction(tx)
 
 		return err
 	}
 
 	if err := s.st.DeleteItemsInSale(tx, saleID); err != nil {
-		tx.Rollback()
+		s.st.RollbackTransaction(tx)
 
 		return err
 	}
 
 	if err := s.st.DeleteSaleBySaleID(tx, saleID); err != nil {
-		tx.Rollback()
+		s.st.RollbackTransaction(tx)
 
 		return err
 	}
 
-	tx.Commit()
+	s.st.CommitTransaction(tx)
 
-	return s.mailer.SendNotificationEmail(*user.Email, itemList)
+	return s.mailer.SendNotificationEmail(user.Email, itemList)
 }
 
 func (s *Sale) MakeSalesList(userID uuid.UUID) []*models.Sale {
@@ -139,7 +138,7 @@ func (s *Sale) MakeSalesList(userID uuid.UUID) []*models.Sale {
 		salesBody[val].Items = append(salesBody[val].Items, item)
 		salesBody[val].TotalCount += item.Price * float64(item.Count)
 
-		if salesBody[val].TotalCount, err = strconv.ParseFloat(fmt.Sprintf("%.2f", salesBody[val].TotalCount), 64); err != nil {
+		if salesBody[val].TotalCount, err = formatFloat(salesBody[val].TotalCount); err != nil {
 			panic(err)
 		}
 	}

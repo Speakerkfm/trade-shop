@@ -60,6 +60,11 @@ func (_m *StoreInterface) ClearInventoryCache(userID uuid.UUID) {
 	_m.Called(userID)
 }
 
+// CommitTransaction provides a mock function with given fields: tx
+func (_m *StoreInterface) CommitTransaction(tx *gorm.DB) {
+	_m.Called(tx)
+}
+
 // CreateNewSale provides a mock function with given fields: db, userID
 func (_m *StoreInterface) CreateNewSale(db *gorm.DB, userID uuid.UUID) uuid.UUID {
 	ret := _m.Called(db, userID)
@@ -134,29 +139,6 @@ func (_m *StoreInterface) GetInventoryByUserId(userID uuid.UUID) []*store.Invent
 	}
 
 	return r0
-}
-
-// GetItemByID provides a mock function with given fields: itemID
-func (_m *StoreInterface) GetItemByID(itemID uuid.UUID) (*store.Item, bool) {
-	ret := _m.Called(itemID)
-
-	var r0 *store.Item
-	if rf, ok := ret.Get(0).(func(uuid.UUID) *store.Item); ok {
-		r0 = rf(itemID)
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*store.Item)
-		}
-	}
-
-	var r1 bool
-	if rf, ok := ret.Get(1).(func(uuid.UUID) bool); ok {
-		r1 = rf(itemID)
-	} else {
-		r1 = ret.Get(1).(bool)
-	}
-
-	return r0, r1
 }
 
 // GetItemsInSaleBySaleID provides a mock function with given fields: saleID
@@ -268,6 +250,11 @@ func (_m *StoreInterface) RemoveMoneyFromUser(db *gorm.DB, userID uuid.UUID, mon
 	}
 
 	return r0
+}
+
+// RollbackTransaction provides a mock function with given fields: tx
+func (_m *StoreInterface) RollbackTransaction(tx *gorm.DB) {
+	_m.Called(tx)
 }
 
 // UserByEmail provides a mock function with given fields: email
