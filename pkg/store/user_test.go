@@ -23,6 +23,33 @@ func TestStore_UserByEmail(t *testing.T) {
 	Gorm.Table("users").Delete(&user)
 }
 
+func TestStore_IsEmailTaken(t *testing.T) {
+	s := NewStore(Gorm, RedisClient)
+
+	uID, _ := uuid.NewV4()
+	user := User{ID: uID, Email: "asdf@mail.com"}
+
+	Gorm.Table("users").Create(&user)
+
+	result1 := s.IsEmailTaken("asdf@mail.com")
+	assert.True(t, result1)
+
+	result2 := s.IsEmailTaken("asdf1@mail.com")
+	assert.False(t, result2)
+
+	Gorm.Table("users").Delete(&user)
+}
+
+func TestStore_CreateNewUser(t *testing.T) {
+	s := NewStore(Gorm, RedisClient)
+
+	user, err := s.CreateNewUser("qwer@mail.com", "12345")
+	assert.Nil(t, err)
+	assert.True(t, user.Email == "qwer@mail.com")
+
+	Gorm.Table("users").Delete(&user)
+}
+
 func TestStore_UserByUserID(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 

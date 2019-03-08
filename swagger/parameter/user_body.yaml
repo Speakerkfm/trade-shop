@@ -1,0 +1,16 @@
+schema:
+  description: Информация о новом пользователе
+  type: object
+  properties:
+    email:
+      type: string
+      x-insullable: false
+    password:
+      type: string
+      x-insullable: false
+  example:
+    email: speaker@mail.com
+    password: "123456"
+in: body
+name: body
+required: true

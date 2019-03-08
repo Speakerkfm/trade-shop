@@ -26,6 +26,8 @@ type StoreInterface interface {
 	CommitTransaction(tx *gorm.DB)
 	RollbackTransaction(tx *gorm.DB)
 	UserByEmail(email string) (*User, bool)
+	CreateNewUser(email string, password string) (*User, error)
+	IsEmailTaken(email string) bool
 	UserByUserID(userID uuid.UUID) (*User, bool)
 	GetUserBill(userID uuid.UUID) float64
 	AddMoneyToUser(db *gorm.DB, userID uuid.UUID, money float64) error

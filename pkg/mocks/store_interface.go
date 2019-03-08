@@ -81,6 +81,29 @@ func (_m *StoreInterface) CreateNewSale(db *gorm.DB, userID uuid.UUID) uuid.UUID
 	return r0
 }
 
+// CreateNewUser provides a mock function with given fields: email, password
+func (_m *StoreInterface) CreateNewUser(email string, password string) (*store.User, error) {
+	ret := _m.Called(email, password)
+
+	var r0 *store.User
+	if rf, ok := ret.Get(0).(func(string, string) *store.User); ok {
+		r0 = rf(email, password)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*store.User)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(string, string) error); ok {
+		r1 = rf(email, password)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // CreateTransaction provides a mock function with given fields:
 func (_m *StoreInterface) CreateTransaction() *gorm.DB {
 	ret := _m.Called()
@@ -245,6 +268,20 @@ func (_m *StoreInterface) GetUserSaleItemList(userID uuid.UUID) ([]*store.ItemSa
 	}
 
 	return r0, r1
+}
+
+// IsEmailTaken provides a mock function with given fields: email
+func (_m *StoreInterface) IsEmailTaken(email string) bool {
+	ret := _m.Called(email)
+
+	var r0 bool
+	if rf, ok := ret.Get(0).(func(string) bool); ok {
+		r0 = rf(email)
+	} else {
+		r0 = ret.Get(0).(bool)
+	}
+
+	return r0
 }
 
 // RemoveItemFromUser provides a mock function with given fields: db, userID, itemID, count

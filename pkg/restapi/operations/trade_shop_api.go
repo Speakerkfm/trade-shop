@@ -20,6 +20,7 @@ import (
 	"github.com/go-openapi/swag"
 
 	"trade-shop/pkg/restapi/operations/login"
+	"trade-shop/pkg/restapi/operations/register"
 	"trade-shop/pkg/restapi/operations/sales"
 	"trade-shop/pkg/restapi/operations/user"
 )
@@ -55,6 +56,9 @@ func NewTradeShopAPI(spec *loads.Document) *TradeShopAPI {
 		}),
 		UserLogoutHandler: user.LogoutHandlerFunc(func(params user.LogoutParams) middleware.Responder {
 			return middleware.NotImplemented("operation UserLogout has not yet been implemented")
+		}),
+		RegisterRegisterHandler: register.RegisterHandlerFunc(func(params register.RegisterParams) middleware.Responder {
+			return middleware.NotImplemented("operation RegisterRegister has not yet been implemented")
 		}),
 		SalesSaleHandler: sales.SaleHandlerFunc(func(params sales.SaleParams) middleware.Responder {
 			return middleware.NotImplemented("operation SalesSale has not yet been implemented")
@@ -106,6 +110,8 @@ type TradeShopAPI struct {
 	LoginLoginHandler login.LoginHandler
 	// UserLogoutHandler sets the operation handler for the logout operation
 	UserLogoutHandler user.LogoutHandler
+	// RegisterRegisterHandler sets the operation handler for the register operation
+	RegisterRegisterHandler register.RegisterHandler
 	// SalesSaleHandler sets the operation handler for the sale operation
 	SalesSaleHandler sales.SaleHandler
 	// SalesSalesListHandler sets the operation handler for the sales list operation
@@ -193,6 +199,10 @@ func (o *TradeShopAPI) Validate() error {
 
 	if o.UserLogoutHandler == nil {
 		unregistered = append(unregistered, "user.LogoutHandler")
+	}
+
+	if o.RegisterRegisterHandler == nil {
+		unregistered = append(unregistered, "register.RegisterHandler")
 	}
 
 	if o.SalesSaleHandler == nil {
@@ -329,6 +339,11 @@ func (o *TradeShopAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/user/logout"] = user.NewLogout(o.context, o.UserLogoutHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/user"] = register.NewRegister(o.context, o.RegisterRegisterHandler)
 
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)

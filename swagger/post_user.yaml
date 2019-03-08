@@ -1,0 +1,12 @@
+post:
+  tags:
+  - register
+  description: Регистрация нового пользователя
+  operationId: register
+  responses:
+    200:
+      description: "OK"
+    400:
+      $ref: ./responses/response_400.yaml
+  parameters:
+  - $ref: './parameter/user_body.yaml'

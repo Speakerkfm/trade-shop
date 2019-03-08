@@ -3,6 +3,8 @@ package store
 import (
 	"testing"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -68,4 +70,13 @@ func Test_found(t *testing.T) {
 	}
 
 	assert.Panics(t, func() { found(errors.New("custom error")) }, "must panic on error")
+}
+
+func Test_hashAndSalt(t *testing.T) {
+	var pwd []byte
+	hp := hashAndSalt(pwd)
+
+	if bcrypt.CompareHashAndPassword([]byte(hp), pwd) != nil {
+		t.Errorf("%v should hash %s correctly", hp, pwd)
+	}
 }

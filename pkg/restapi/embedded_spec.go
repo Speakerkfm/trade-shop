@@ -145,6 +145,51 @@ func init() {
         }
       }
     },
+    "/user": {
+      "post": {
+        "description": "Регистрация нового пользователя",
+        "tags": [
+          "register"
+        ],
+        "operationId": "register",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "description": "Информация о новом пользователе",
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "x-insullable": false
+                },
+                "password": {
+                  "type": "string",
+                  "x-insullable": false
+                }
+              },
+              "example": {
+                "email": "speaker@mail.com",
+                "password": "123456"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Логическая ошибка",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
+          }
+        }
+      }
+    },
     "/user/inventory": {
       "get": {
         "description": "User inventory",
@@ -531,6 +576,51 @@ func init() {
           },
           "401": {
             "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "description": "Регистрация нового пользователя",
+        "tags": [
+          "register"
+        ],
+        "operationId": "register",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "description": "Информация о новом пользователе",
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "x-insullable": false
+                },
+                "password": {
+                  "type": "string",
+                  "x-insullable": false
+                }
+              },
+              "example": {
+                "email": "speaker@mail.com",
+                "password": "123456"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Логическая ошибка",
             "schema": {
               "$ref": "#/definitions/errorResult"
             }

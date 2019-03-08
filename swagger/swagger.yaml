@@ -11,6 +11,8 @@ schemes:
 paths:
   /login:
     $ref: './post_login.yaml'
+  /user:
+    $ref: './post_user.yaml'
   /user/logout:
     $ref: './logout.yaml'
   /user/inventory:

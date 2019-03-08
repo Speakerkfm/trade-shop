@@ -6,7 +6,7 @@ var WrongUsernameOrPassword = models.ErrorResult{Error: &models.ErrorResultError
 	Code:        "001",
 	Description: "Wrong email or password",
 }}
-var WrongAccess = models.ErrorResult{Error: &models.ErrorResultError{
+var EmailIsTaken = models.ErrorResult{Error: &models.ErrorResultError{
 	Code:        "002",
-	Description: "Wrong access",
+	Description: "Email address is already taken",
 }}

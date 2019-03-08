@@ -1,11 +1,11 @@
 -
   id: 017d4ff8-e2c8-42f2-89f3-7822eeca3ebe
   email: speaker123@mail.ru
-  password: 123456
+  password: $2a$10$ygglARoO62D8QVQuZzO/LenEtc4bNTmSzer1P2abcW2/9sfCxhjx6
   bill: 500
 
 -
   id: 56a8b65c-7432-463f-aadc-0e5b7eca8d06
   email: speaker@mail.ru
-  password: 123456
+  password: $2a$10$g7k32.pyRChKrOWukELSzeZhYNFXZVIpwIebv.IV0OuAPGjQLiiaG
   bill: 100

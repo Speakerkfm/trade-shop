@@ -3,6 +3,8 @@ package store
 import (
 	"fmt"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
 )
@@ -25,6 +27,23 @@ func (st *Store) UserByEmail(email string) (*User, bool) {
 	return &user, found(err)
 }
 
+func (st *Store) CreateNewUser(email string, password string) (*User, error) {
+	id, _ := uuid.NewV4()
+	passwordHash := hashAndSalt([]byte(password))
+	user := User{ID: id, Email: email, Password: passwordHash}
+
+	err := st.gorm.Create(&user).Error
+
+	return &user, err
+}
+
+func (st *Store) IsEmailTaken(email string) bool {
+	var user User
+	err := st.gorm.First(&user, "email = ?", email).Error
+
+	return found(err)
+}
+
 func (st *Store) UserByUserID(userID uuid.UUID) (*User, bool) {
 	user := User{
 		ID: userID,
@@ -35,9 +54,8 @@ func (st *Store) UserByUserID(userID uuid.UUID) (*User, bool) {
 }
 
 func (u *User) PasswordValid(password string) bool {
-	//err := bcrypt.CompareHashAndPassword([]byte(*u.Password), []byte(password))
-	//return err == nil
-	return u.Password == password
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
+	return err == nil
 }
 
 func (st *Store) GetUserBill(userID uuid.UUID) float64 {
