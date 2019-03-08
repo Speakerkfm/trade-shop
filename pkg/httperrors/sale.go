@@ -26,3 +26,8 @@ var NotEnoughMoney = models.ErrorResult{Error: &models.ErrorResultError{
 	Code:        "006",
 	Description: "Not enough money",
 }}
+
+var NotYourLot = models.ErrorResult{Error: &models.ErrorResultError{
+	Code:        "007",
+	Description: "This is not your lot",
+}}

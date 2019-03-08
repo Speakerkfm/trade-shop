@@ -266,6 +266,42 @@ func init() {
           }
         }
       }
+    },
+    "/user/sales/{sale_id}/cancel": {
+      "get": {
+        "description": "Отменить продажу",
+        "tags": [
+          "user"
+        ],
+        "operationId": "cancel",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "идентификатор продажи",
+            "name": "sale_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Логическая ошибка",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
+          },
+          "401": {
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -613,6 +649,42 @@ func init() {
               "items": {
                 "$ref": "#/definitions/sale"
               }
+            }
+          },
+          "401": {
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
+          }
+        }
+      }
+    },
+    "/user/sales/{sale_id}/cancel": {
+      "get": {
+        "description": "Отменить продажу",
+        "tags": [
+          "user"
+        ],
+        "operationId": "cancel",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "идентификатор продажи",
+            "name": "sale_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Логическая ошибка",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
             }
           },
           "401": {

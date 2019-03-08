@@ -189,3 +189,56 @@ func (s *Sale) MakeUserSalesList(userID uuid.UUID) []*models.Sale {
 
 	return salesBody
 }
+
+func (s *Sale) Cancel(userID uuid.UUID, saleID uuid.UUID) error {
+	_, found := s.st.UserByUserID(userID)
+	if !found {
+		return fmt.Errorf("user not found")
+	}
+
+	s.st.ClearInventoryCache(userID)
+
+	itemList, err := s.st.GetItemsInSaleBySaleID(saleID)
+	if err != nil {
+		return err
+	}
+
+	tx := s.st.CreateTransaction()
+	money := 0.0
+
+	for _, val := range itemList {
+		money += val.Price * float64(val.Count)
+
+		if err = s.st.AddItemToUser(tx, userID, val); err != nil {
+			s.st.RollbackTransaction(tx)
+
+			return err
+		}
+	}
+
+	if money, err = formatFloat(money); err != nil {
+		panic(err)
+	}
+
+	if err := s.st.AddMoneyToUser(tx, userID, money); err != nil {
+		s.st.RollbackTransaction(tx)
+
+		return err
+	}
+
+	if err := s.st.DeleteItemsInSale(tx, saleID); err != nil {
+		s.st.RollbackTransaction(tx)
+
+		return err
+	}
+
+	if err := s.st.DeleteSaleBySaleID(tx, saleID); err != nil {
+		s.st.RollbackTransaction(tx)
+
+		return err
+	}
+
+	s.st.CommitTransaction(tx)
+
+	return nil
+}

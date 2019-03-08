@@ -44,6 +44,9 @@ func NewTradeShopAPI(spec *loads.Document) *TradeShopAPI {
 		SalesBuyHandler: sales.BuyHandlerFunc(func(params sales.BuyParams) middleware.Responder {
 			return middleware.NotImplemented("operation SalesBuy has not yet been implemented")
 		}),
+		UserCancelHandler: user.CancelHandlerFunc(func(params user.CancelParams) middleware.Responder {
+			return middleware.NotImplemented("operation UserCancel has not yet been implemented")
+		}),
 		UserInventoryHandler: user.InventoryHandlerFunc(func(params user.InventoryParams) middleware.Responder {
 			return middleware.NotImplemented("operation UserInventory has not yet been implemented")
 		}),
@@ -95,6 +98,8 @@ type TradeShopAPI struct {
 
 	// SalesBuyHandler sets the operation handler for the buy operation
 	SalesBuyHandler sales.BuyHandler
+	// UserCancelHandler sets the operation handler for the cancel operation
+	UserCancelHandler user.CancelHandler
 	// UserInventoryHandler sets the operation handler for the inventory operation
 	UserInventoryHandler user.InventoryHandler
 	// LoginLoginHandler sets the operation handler for the login operation
@@ -172,6 +177,10 @@ func (o *TradeShopAPI) Validate() error {
 
 	if o.SalesBuyHandler == nil {
 		unregistered = append(unregistered, "sales.BuyHandler")
+	}
+
+	if o.UserCancelHandler == nil {
+		unregistered = append(unregistered, "user.CancelHandler")
 	}
 
 	if o.UserInventoryHandler == nil {
@@ -300,6 +309,11 @@ func (o *TradeShopAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/sales/{sale_id}/buy"] = sales.NewBuy(o.context, o.SalesBuyHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/user/sales/{sale_id}/cancel"] = user.NewCancel(o.context, o.UserCancelHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

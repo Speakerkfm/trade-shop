@@ -12,6 +12,20 @@ type Sale struct {
 	mock.Mock
 }
 
+// Cancel provides a mock function with given fields: userID, saleID
+func (_m *Sale) Cancel(userID uuid.UUID, saleID uuid.UUID) error {
+	ret := _m.Called(userID, saleID)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(uuid.UUID, uuid.UUID) error); ok {
+		r0 = rf(userID, saleID)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // CreateLot provides a mock function with given fields: userID, itemList
 func (_m *Sale) CreateLot(userID uuid.UUID, itemList []*models.ItemSale) error {
 	ret := _m.Called(userID, itemList)

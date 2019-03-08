@@ -5,7 +5,7 @@ import (
 	"trade-shop/pkg/models"
 
 	"github.com/go-openapi/strfmt"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -36,14 +36,14 @@ func TestStore_GetSaleItemList(t *testing.T) {
 	Gorm.Table("items").Create(&item2)
 	Gorm.Create(&sale1)
 	Gorm.Create(&sale2)
-	itemSale1 := ItemSale{SaleID: sale1.ID, ItemID: iID1, Count: 8, Price: 12.20}
-	itemSale2 := ItemSale{SaleID: sale2.ID, ItemID: iID2, Count: 12, Price: 5.20}
+	itemSale1 := ItemSale{SaleID: sale1.ID, SellerID: sID1, ItemID: iID1, Count: 8, Price: 12.20}
+	itemSale2 := ItemSale{SaleID: sale2.ID, SellerID: sID2, ItemID: iID2, Count: 12, Price: 5.20}
 	Gorm.Create(&itemSale1)
 	Gorm.Create(&itemSale2)
 
 	res, err := s.GetSaleItemList(sID1)
 	assert.Nil(t, err)
-	assert.True(t, res[0].Name == "item2")
+	assert.True(t, res[0].SellerID != sID1)
 
 	Gorm.Table("items").Delete(&item1)
 	Gorm.Table("items").Delete(&item2)
@@ -80,8 +80,8 @@ func TestStore_GetUserSaleItemList(t *testing.T) {
 	Gorm.Table("items").Create(&item2)
 	Gorm.Create(&sale1)
 	Gorm.Create(&sale2)
-	itemSale1 := ItemSale{SaleID: sale1.ID, ItemID: iID1, Count: 8, Price: 12.20}
-	itemSale2 := ItemSale{SaleID: sale2.ID, ItemID: iID2, Count: 12, Price: 5.20}
+	itemSale1 := ItemSale{SaleID: sale1.ID, SellerID: uID, ItemID: iID1, Count: 8, Price: 12.20}
+	itemSale2 := ItemSale{SaleID: sale2.ID, SellerID: sID, ItemID: iID2, Count: 12, Price: 5.20}
 	Gorm.Create(&itemSale1)
 	Gorm.Create(&itemSale2)
 

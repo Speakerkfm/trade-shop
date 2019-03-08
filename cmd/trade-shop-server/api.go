@@ -37,6 +37,7 @@ func configureAPI(api *operations.TradeShopAPI, db *gorm.DB, redisClient *redis.
 	api.UserInventoryHandler = userApi.InventoryHandlerFunc(userContext.GetInventoryList)
 	api.UserLogoutHandler = userApi.LogoutHandlerFunc(userContext.LogoutUser)
 	api.UserUserSalesListHandler = userApi.UserSalesListHandlerFunc(userContext.GetUserSalesList)
+	api.UserCancelHandler = userApi.CancelHandlerFunc(userContext.SaleCancel)
 
 	api.ServerShutdown = func() {}
 

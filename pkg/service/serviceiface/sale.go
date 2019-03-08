@@ -13,4 +13,5 @@ type Sale interface {
 	Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) error
 	MakeSalesList(userID uuid.UUID) []*models.Sale
 	MakeUserSalesList(userID uuid.UUID) []*models.Sale
+	Cancel(userID uuid.UUID, saleID uuid.UUID) error
 }

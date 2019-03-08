@@ -1,8 +1,9 @@
 package user
 
 import (
-	"github.com/go-openapi/runtime/middleware"
 	"trade-shop/pkg/restapi/operations/user"
+
+	"github.com/go-openapi/runtime/middleware"
 )
 
 func (c *Context) GetUserSalesList(params user.UserSalesListParams) middleware.Responder {

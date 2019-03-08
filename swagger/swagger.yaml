@@ -19,6 +19,8 @@ paths:
     $ref: './post_sale.yaml'
   /user/sales:
     $ref: './user_sales.yaml'
+  /user/sales/{sale_id}/cancel:
+    $ref: './sale_cancel.yaml'
   /sales:
     $ref: './sales.yaml'
   /sales/{sale_id}/buy:

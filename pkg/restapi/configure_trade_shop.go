@@ -39,6 +39,9 @@ func configureAPI(api *operations.TradeShopAPI) http.Handler {
 	api.SalesBuyHandler = sales.BuyHandlerFunc(func(params sales.BuyParams) middleware.Responder {
 		return middleware.NotImplemented("operation sales.Buy has not yet been implemented")
 	})
+	api.UserCancelHandler = user.CancelHandlerFunc(func(params user.CancelParams) middleware.Responder {
+		return middleware.NotImplemented("operation user.Cancel has not yet been implemented")
+	})
 	api.UserInventoryHandler = user.InventoryHandlerFunc(func(params user.InventoryParams) middleware.Responder {
 		return middleware.NotImplemented("operation user.Inventory has not yet been implemented")
 	})
