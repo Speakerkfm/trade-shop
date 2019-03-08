@@ -100,7 +100,7 @@ func TestSale_Purchase(t *testing.T) {
 
 	cases := map[string]struct {
 		userID   uuid.UUID
-		user     *store.User
+		seller   *store.User
 		sellerID uuid.UUID
 		saleID   uuid.UUID
 		tx       *gorm.DB
@@ -112,7 +112,7 @@ func TestSale_Purchase(t *testing.T) {
 			userID:   uID,
 			sellerID: slID,
 			saleID:   sID,
-			user: &store.User{
+			seller: &store.User{
 				Email: "asdf@mail.com",
 			},
 			itemList: []*store.ItemSale{
@@ -126,7 +126,8 @@ func TestSale_Purchase(t *testing.T) {
 	}
 
 	for _, test := range cases {
-		stI.On("UserByUserID", test.userID).Return(test.user, true)
+		stI.On("UserByUserID", test.userID).Return(nil, true)
+		stI.On("UserByUserID", test.sellerID).Return(test.seller, true)
 		stI.On("ClearInventoryCache", test.userID)
 		stI.On("ClearInventoryCache", test.sellerID)
 		stI.On("GetItemsInSaleBySaleID", test.saleID).Return(test.itemList, nil)
@@ -139,7 +140,7 @@ func TestSale_Purchase(t *testing.T) {
 		stI.On("AddMoneyToUser", test.tx, test.sellerID, test.money).Return(nil)
 		stI.On("DeleteItemsInSale", test.tx, test.saleID).Return(nil)
 		stI.On("DeleteSaleBySaleID", test.tx, test.saleID).Return(nil)
-		mailer.On("SendNotificationEmail", test.user.Email, test.itemList).Return(nil)
+		mailer.On("SendNotificationEmail", test.seller.Email, test.itemList).Return(nil)
 
 		if test.err == nil {
 			stI.On("CommitTransaction", test.tx)
@@ -192,6 +193,49 @@ func TestSale_MakeSalesList(t *testing.T) {
 		stI.On("GetSaleItemList", test.userID).Return(test.salesList, nil)
 
 		result := sl.MakeSalesList(test.userID)
+		assert.Equal(t, test.resultList, result)
+	}
+}
+
+func TestSale_MakeUserSalesList(t *testing.T) {
+	stI := mocks.StoreInterface{}
+	mailer := mocks.Mailer{}
+
+	sl := NewSale(&stI, &mailer)
+
+	slID, _ := uuid.NewV4()
+	uID, _ := uuid.NewV4()
+	iID1, _ := uuid.NewV4()
+	iID2, _ := uuid.NewV4()
+
+	cases := map[string]struct {
+		userID     uuid.UUID
+		salesList  []*store.ItemSale
+		resultList []*models.Sale
+	}{
+		"ok": {
+			userID: uID,
+			salesList: []*store.ItemSale{
+				{SellerID: uID, SaleID: slID, ItemID: iID1, Name: "item1", Count: 3, Price: 12.20},
+				{SellerID: uID, SaleID: slID, ItemID: iID2, Name: "item2", Count: 5, Price: 5.20},
+			},
+			resultList: []*models.Sale{
+				{
+					ID: strfmt.UUID(slID.String()),
+					Items: []*models.SaleItemsItems0{
+						{ID: strfmt.UUID(iID1.String()), Name: "item1", Count: 3, Price: 12.20},
+						{ID: strfmt.UUID(iID2.String()), Name: "item2", Count: 5, Price: 5.20},
+					},
+					TotalCount: 62.6,
+				},
+			},
+		},
+	}
+
+	for _, test := range cases {
+		stI.On("GetUserSaleItemList", test.userID).Return(test.salesList, nil)
+
+		result := sl.MakeUserSalesList(test.userID)
 		assert.Equal(t, test.resultList, result)
 	}
 }

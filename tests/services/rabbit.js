@@ -10,18 +10,19 @@ const EXCHANGE_OPTION = {
 module.exports = {
     getMessage: async () => {
         const conn = await amqp.connect(
-            `amqp://`+process.env.AMQP_USER+':'+process.env.AMQP_PASSWORD+'@'+process.env.AMQP_HOST+':'+process.env.AMQP_PORT
+            `amqp://`+ process.env.AMQP_USER+':'+process.env.AMQP_PASSWORD+'@'+process.env.AMQP_HOST+':'+process.env.AMQP_PORT+'/'
         );
         const channel = await conn.createChannel();
 
         await channel.assertExchange(EXCHANGE_NAME, EXCHANGE_TYPE, EXCHANGE_OPTION);
 
         const q = await channel.assertQueue(EXCHANGE_NAME, {
+            name: EXCHANGE_NAME,
             durable: true,
             autoDelete: false,
             exclusive: false,
             nowait: false,
-            argument: {'x-dead-letter-exchange': 'mailer_fail'}
+            arguments: {"x-dead-letter-exchange": "mailer_fail"}
         });
 
         console.log('Waiting for logs');

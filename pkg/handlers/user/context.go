@@ -11,9 +11,10 @@ type Context struct {
 	st   store.StoreInterface
 	rst  *redistore.RediStore
 	auth serviceiface.AuthService
+	sale serviceiface.Sale
 	inv  serviceiface.Inventory
 }
 
-func NewContext(st store.StoreInterface, rst *redistore.RediStore, auth serviceiface.AuthService, inv serviceiface.Inventory) *Context {
-	return &Context{st: st, rst: rst, auth: auth, inv: inv}
+func NewContext(st store.StoreInterface, rst *redistore.RediStore, auth serviceiface.AuthService, sale serviceiface.Sale, inv serviceiface.Inventory) *Context {
+	return &Context{st: st, rst: rst, auth: auth, sale: sale, inv: inv}
 }

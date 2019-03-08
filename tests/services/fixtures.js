@@ -1,6 +1,5 @@
 const params = require('./params'),
     mysql = require('./mysql'),
-    fs = require('fs'),
     yaml = require('yamljs');
 
 module.exports = {

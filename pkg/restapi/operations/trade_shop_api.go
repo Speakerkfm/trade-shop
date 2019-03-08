@@ -59,6 +59,9 @@ func NewTradeShopAPI(spec *loads.Document) *TradeShopAPI {
 		SalesSalesListHandler: sales.SalesListHandlerFunc(func(params sales.SalesListParams) middleware.Responder {
 			return middleware.NotImplemented("operation SalesSalesList has not yet been implemented")
 		}),
+		UserUserSalesListHandler: user.UserSalesListHandlerFunc(func(params user.UserSalesListParams) middleware.Responder {
+			return middleware.NotImplemented("operation UserUserSalesList has not yet been implemented")
+		}),
 	}
 }
 
@@ -102,6 +105,8 @@ type TradeShopAPI struct {
 	SalesSaleHandler sales.SaleHandler
 	// SalesSalesListHandler sets the operation handler for the sales list operation
 	SalesSalesListHandler sales.SalesListHandler
+	// UserUserSalesListHandler sets the operation handler for the user sales list operation
+	UserUserSalesListHandler user.UserSalesListHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -187,6 +192,10 @@ func (o *TradeShopAPI) Validate() error {
 
 	if o.SalesSalesListHandler == nil {
 		unregistered = append(unregistered, "sales.SalesListHandler")
+	}
+
+	if o.UserUserSalesListHandler == nil {
+		unregistered = append(unregistered, "user.UserSalesListHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -316,6 +325,11 @@ func (o *TradeShopAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/sales"] = sales.NewSalesList(o.context, o.SalesSalesListHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/user/sales"] = user.NewUserSalesList(o.context, o.UserUserSalesListHandler)
 
 }
 

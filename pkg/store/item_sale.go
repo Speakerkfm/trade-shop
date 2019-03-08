@@ -26,6 +26,16 @@ func (st *Store) GetSaleItemList(userID uuid.UUID) ([]*ItemSale, error) {
 	return ItemSales, err
 }
 
+func (st *Store) GetUserSaleItemList(userID uuid.UUID) ([]*ItemSale, error) {
+	var ItemSales []*ItemSale
+	err := st.gorm.Raw(`
+		select s.user_id, i.sale_id, i.item_id, its.name, i.count, i.price
+		from item_sale i join items its 
+		on i.item_id = its.id join sales s on i.sale_id = s.id where s.user_id = ?`, userID).Scan(&ItemSales).Error
+
+	return ItemSales, err
+}
+
 func (st *Store) GetItemsInSaleBySaleID(saleID uuid.UUID) ([]*ItemSale, error) {
 	var ItemSales []*ItemSale
 	err := st.gorm.Raw(`

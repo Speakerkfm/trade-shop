@@ -224,6 +224,29 @@ func (_m *StoreInterface) GetUserBill(userID uuid.UUID) float64 {
 	return r0
 }
 
+// GetUserSaleItemList provides a mock function with given fields: userID
+func (_m *StoreInterface) GetUserSaleItemList(userID uuid.UUID) ([]*store.ItemSale, error) {
+	ret := _m.Called(userID)
+
+	var r0 []*store.ItemSale
+	if rf, ok := ret.Get(0).(func(uuid.UUID) []*store.ItemSale); ok {
+		r0 = rf(userID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*store.ItemSale)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(uuid.UUID) error); ok {
+		r1 = rf(userID)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // RemoveItemFromUser provides a mock function with given fields: db, userID, itemID, count
 func (_m *StoreInterface) RemoveItemFromUser(db *gorm.DB, userID uuid.UUID, itemID uuid.UUID, count int64) error {
 	ret := _m.Called(db, userID, itemID, count)

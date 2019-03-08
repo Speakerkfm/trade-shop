@@ -240,6 +240,32 @@ func init() {
           }
         }
       }
+    },
+    "/user/sales": {
+      "get": {
+        "description": "Список лотов пользователя",
+        "tags": [
+          "user"
+        ],
+        "operationId": "user_sales_list",
+        "responses": {
+          "200": {
+            "description": "Список лотов пользователя",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/sale"
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -561,6 +587,32 @@ func init() {
             "description": "Логическая ошибка",
             "schema": {
               "$ref": "#/definitions/errorResult"
+            }
+          },
+          "401": {
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
+          }
+        }
+      }
+    },
+    "/user/sales": {
+      "get": {
+        "description": "Список лотов пользователя",
+        "tags": [
+          "user"
+        ],
+        "operationId": "user_sales_list",
+        "responses": {
+          "200": {
+            "description": "Список лотов пользователя",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/sale"
+              }
             }
           },
           "401": {

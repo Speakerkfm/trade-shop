@@ -3,6 +3,7 @@ const hippie = require('hippie-swagger'),
     swagger = require('../../../tmp/swagger.dereference.json'),
     auth = require('../../services/auth'),
     mysql = require('../../services/mysql'),
+    rabbit = require('../../services/rabbit'),
     expect = require('chai').expect;
 
 async function getBuy(buffer, saleID, expect, status) {
@@ -58,12 +59,18 @@ describe("GET /sales/{sale_id}/buy", () => {
         });
 
         step("check seller bill in db", async () => {
-
             const result3 = await mysql.query(
                 "SELECT * FROM `trade-shop`.users WHERE id = '56a8b65c-7432-463f-aadc-0e5b7eca8d06'"
             );
             const user = result3[0];
             expect(user.bill).to.equal(261.5)
+        });
+
+        step('check message in rabbit', async () => {
+            const obj = await rabbit.getMessage();
+            expect(obj.email).to.equal('speaker@mail.ru');
+            expect(obj.email_type).to.equal('email_notification');
+            expect(obj.data).to.not.equal('');
         });
     });
 

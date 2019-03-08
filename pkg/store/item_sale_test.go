@@ -5,7 +5,7 @@ import (
 	"trade-shop/pkg/models"
 
 	"github.com/go-openapi/strfmt"
-	uuid "github.com/satori/go.uuid"
+	"github.com/satori/go.uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -44,6 +44,50 @@ func TestStore_GetSaleItemList(t *testing.T) {
 	res, err := s.GetSaleItemList(sID1)
 	assert.Nil(t, err)
 	assert.True(t, res[0].Name == "item2")
+
+	Gorm.Table("items").Delete(&item1)
+	Gorm.Table("items").Delete(&item2)
+	Gorm.Delete(&sale1)
+	Gorm.Delete(&sale2)
+	Gorm.Delete(&itemSale1)
+	Gorm.Delete(&itemSale2)
+}
+
+func TestStore_GetUserSaleItemList(t *testing.T) {
+	s := NewStore(Gorm, RedisClient)
+
+	uID, _ := uuid.NewV4()
+	sID, _ := uuid.NewV4()
+	iID1, _ := uuid.NewV4()
+	iID2, _ := uuid.NewV4()
+
+	item1 := Item{
+		ID:   iID1,
+		Name: "item1",
+	}
+	item2 := Item{
+		ID:   iID2,
+		Name: "item2",
+	}
+	sale1 := Sales{
+		UserID: uID,
+	}
+	sale2 := Sales{
+		UserID: sID,
+	}
+
+	Gorm.Table("items").Create(&item1)
+	Gorm.Table("items").Create(&item2)
+	Gorm.Create(&sale1)
+	Gorm.Create(&sale2)
+	itemSale1 := ItemSale{SaleID: sale1.ID, ItemID: iID1, Count: 8, Price: 12.20}
+	itemSale2 := ItemSale{SaleID: sale2.ID, ItemID: iID2, Count: 12, Price: 5.20}
+	Gorm.Create(&itemSale1)
+	Gorm.Create(&itemSale2)
+
+	res, err := s.GetUserSaleItemList(uID)
+	assert.Nil(t, err)
+	assert.True(t, res[0].Name == "item1")
 
 	Gorm.Table("items").Delete(&item1)
 	Gorm.Table("items").Delete(&item2)

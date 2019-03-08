@@ -50,7 +50,12 @@ func (s *Sale) CreateLot(userID uuid.UUID, itemList []*models.ItemSale) error {
 }
 
 func (s *Sale) Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) error {
-	user, found := s.st.UserByUserID(userID)
+	_, found := s.st.UserByUserID(userID)
+	if !found {
+		return fmt.Errorf("user not found")
+	}
+
+	seller, found := s.st.UserByUserID(sellerID)
 	if !found {
 		return fmt.Errorf("user not found")
 	}
@@ -106,12 +111,50 @@ func (s *Sale) Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) 
 
 	s.st.CommitTransaction(tx)
 
-	return s.mailer.SendNotificationEmail(user.Email, itemList)
+	return s.mailer.SendNotificationEmail(seller.Email, itemList)
 }
 
 func (s *Sale) MakeSalesList(userID uuid.UUID) []*models.Sale {
 	var err error
 	salesList, err := s.st.GetSaleItemList(userID)
+	if err != nil {
+		panic(err)
+	}
+
+	var salesBody []*models.Sale
+	var salesMap = make(map[uuid.UUID]int, len(salesList))
+	var count = 0
+
+	for idx := range salesList {
+		item := &models.SaleItemsItems0{
+			ID:    strfmt.UUID(salesList[idx].ItemID.String()),
+			Name:  salesList[idx].Name,
+			Count: salesList[idx].Count,
+			Price: salesList[idx].Price,
+		}
+
+		_, ok := salesMap[salesList[idx].SaleID]
+		if !ok {
+			salesBody = append(salesBody, &models.Sale{ID: strfmt.UUID(salesList[idx].SaleID.String())})
+			salesMap[salesList[idx].SaleID] = count
+			count++
+		}
+
+		val := salesMap[salesList[idx].SaleID]
+		salesBody[val].Items = append(salesBody[val].Items, item)
+		salesBody[val].TotalCount += item.Price * float64(item.Count)
+
+		if salesBody[val].TotalCount, err = formatFloat(salesBody[val].TotalCount); err != nil {
+			panic(err)
+		}
+	}
+
+	return salesBody
+}
+
+func (s *Sale) MakeUserSalesList(userID uuid.UUID) []*models.Sale {
+	var err error
+	salesList, err := s.st.GetUserSaleItemList(userID)
 	if err != nil {
 		panic(err)
 	}

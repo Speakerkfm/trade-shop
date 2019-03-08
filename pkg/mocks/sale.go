@@ -42,6 +42,22 @@ func (_m *Sale) MakeSalesList(userID uuid.UUID) []*models.Sale {
 	return r0
 }
 
+// MakeUserSalesList provides a mock function with given fields: userID
+func (_m *Sale) MakeUserSalesList(userID uuid.UUID) []*models.Sale {
+	ret := _m.Called(userID)
+
+	var r0 []*models.Sale
+	if rf, ok := ret.Get(0).(func(uuid.UUID) []*models.Sale); ok {
+		r0 = rf(userID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*models.Sale)
+		}
+	}
+
+	return r0
+}
+
 // Purchase provides a mock function with given fields: userID, sellerID, saleID
 func (_m *Sale) Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) error {
 	ret := _m.Called(userID, sellerID, saleID)

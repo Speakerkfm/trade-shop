@@ -47,3 +47,6 @@ fmt:
 
 lint: fmt
 	golangci-lint run --skip-dirs tmp
+
+clearqueue:
+	rabbitmqadmin purge queue name=mailer

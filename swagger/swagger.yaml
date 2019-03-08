@@ -17,6 +17,8 @@ paths:
     $ref: './user_inventory.yaml'
   /user/sale:
     $ref: './post_sale.yaml'
+  /user/sales:
+    $ref: './user_sales.yaml'
   /sales:
     $ref: './sales.yaml'
   /sales/{sale_id}/buy:
