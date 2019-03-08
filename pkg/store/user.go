@@ -2,8 +2,9 @@ package store
 
 import (
 	"fmt"
+
 	"github.com/jinzhu/gorm"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 type User struct {
@@ -54,7 +55,7 @@ func (st *Store) AddMoneyToUser(db *gorm.DB, userID uuid.UUID, money float64) er
 		return nil
 	}
 
-	user.Bill = user.Bill + money
+	user.Bill += money
 
 	return db.Save(&user).Error
 }
@@ -70,7 +71,7 @@ func (st *Store) RemoveMoneyFromUser(db *gorm.DB, userID uuid.UUID, money float6
 		return fmt.Errorf("not enough money")
 	}
 
-	user.Bill = user.Bill - money
+	user.Bill -= money
 
 	return db.Save(&user).Error
 }

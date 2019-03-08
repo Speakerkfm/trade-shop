@@ -1,9 +1,10 @@
 package store
 
 import (
-	"github.com/satori/go.uuid"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	uuid "github.com/satori/go.uuid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestStore_CreateNewSale(t *testing.T) {

@@ -2,14 +2,15 @@ package service
 
 import (
 	"fmt"
-	"github.com/go-openapi/strfmt"
-	"github.com/jinzhu/gorm"
-	"github.com/satori/go.uuid"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"trade-shop/pkg/mocks"
 	"trade-shop/pkg/models"
 	"trade-shop/pkg/store"
+
+	"github.com/go-openapi/strfmt"
+	"github.com/jinzhu/gorm"
+	uuid "github.com/satori/go.uuid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSale_CreateLot(t *testing.T) {

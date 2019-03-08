@@ -2,8 +2,9 @@ package user
 
 import (
 	"fmt"
-	"github.com/go-openapi/runtime/middleware"
 	"trade-shop/pkg/restapi/operations/user"
+
+	"github.com/go-openapi/runtime/middleware"
 )
 
 func (c *Context) GetInventoryList(params user.InventoryParams) middleware.Responder {

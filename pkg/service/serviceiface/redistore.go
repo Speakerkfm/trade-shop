@@ -3,8 +3,9 @@
 package serviceiface
 
 import (
-	"gopkg.in/boj/redistore.v1"
 	"net/http"
+
+	redistore "gopkg.in/boj/redistore.v1"
 
 	"github.com/gorilla/sessions"
 )

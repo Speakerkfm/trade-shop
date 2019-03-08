@@ -2,9 +2,10 @@ package store
 
 import (
 	"fmt"
-	"github.com/satori/go.uuid"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	uuid "github.com/satori/go.uuid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestStore_UserByEmail(t *testing.T) {

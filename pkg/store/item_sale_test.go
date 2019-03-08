@@ -1,11 +1,12 @@
 package store
 
 import (
-	"github.com/go-openapi/strfmt"
-	"github.com/satori/go.uuid"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"trade-shop/pkg/models"
+
+	"github.com/go-openapi/strfmt"
+	uuid "github.com/satori/go.uuid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestStore_GetSaleItemList(t *testing.T) {
@@ -42,7 +43,7 @@ func TestStore_GetSaleItemList(t *testing.T) {
 
 	res, err := s.GetSaleItemList(sID1)
 	assert.Nil(t, err)
-	assert.True(t, (*res[0]).Name == "item2")
+	assert.True(t, res[0].Name == "item2")
 
 	Gorm.Table("items").Delete(&item1)
 	Gorm.Table("items").Delete(&item2)

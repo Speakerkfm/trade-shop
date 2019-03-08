@@ -1,11 +1,7 @@
 package main
 
 import (
-	"github.com/go-redis/redis"
-	"github.com/jinzhu/gorm"
-	"gopkg.in/boj/redistore.v1"
 	"net/http"
-	"trade-shop/pkg/flags"
 	"trade-shop/pkg/handlers/login"
 	"trade-shop/pkg/handlers/sales"
 	"trade-shop/pkg/handlers/user"
@@ -15,9 +11,13 @@ import (
 	userApi "trade-shop/pkg/restapi/operations/user"
 	"trade-shop/pkg/service"
 	"trade-shop/pkg/store"
+
+	"github.com/go-redis/redis"
+	"github.com/jinzhu/gorm"
+	redistore "gopkg.in/boj/redistore.v1"
 )
 
-func configureAPI(api *operations.TradeShopAPI, db *gorm.DB, redisClient *redis.Client, rst *redistore.RediStore, amqpClient *service.Queue, conf *flags.Config) http.Handler {
+func configureAPI(api *operations.TradeShopAPI, db *gorm.DB, redisClient *redis.Client, rst *redistore.RediStore, amqpClient *service.Queue) http.Handler {
 	st := store.NewStore(db, redisClient)
 	mailer := service.NewMailer(amqpClient)
 
@@ -48,10 +48,4 @@ func setupMiddleware(handler http.Handler) http.Handler {
 
 func setupGlobalMiddleware(handler http.Handler) http.Handler {
 	return handler
-}
-
-func sessionListener(h http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		h.ServeHTTP(w, r)
-	})
 }

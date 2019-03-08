@@ -1,9 +1,10 @@
 package store
 
 import (
-	"github.com/jinzhu/gorm"
-	"github.com/satori/go.uuid"
 	"trade-shop/pkg/models"
+
+	"github.com/jinzhu/gorm"
+	uuid "github.com/satori/go.uuid"
 )
 
 type ItemSale struct {

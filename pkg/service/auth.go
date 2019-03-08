@@ -1,9 +1,10 @@
 package service
 
 import (
-	"github.com/satori/go.uuid"
 	"net/http"
 	"trade-shop/pkg/service/serviceiface"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 type AuthService struct {
@@ -26,12 +27,12 @@ func (a *AuthService) GetUserAuth(r *http.Request) (*uuid.UUID, bool) {
 
 	if session.Values["userID"] == nil {
 		return nil, false
-	} else {
-		id, err := uuid.FromString(session.Values["userID"].(string))
-		if err != nil {
-			panic(err)
-		}
-
-		return &id, true
 	}
+
+	id, err := uuid.FromString(session.Values["userID"].(string))
+	if err != nil {
+		panic(err)
+	}
+
+	return &id, true
 }

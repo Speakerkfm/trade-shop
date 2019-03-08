@@ -1,10 +1,11 @@
 package sales
 
 import (
-	"github.com/go-openapi/runtime/middleware"
-	"github.com/satori/go.uuid"
 	"trade-shop/pkg/httperrors"
 	"trade-shop/pkg/restapi/operations/sales"
+
+	"github.com/go-openapi/runtime/middleware"
+	uuid "github.com/satori/go.uuid"
 )
 
 func (c *Context) BuyLot(params sales.BuyParams) middleware.Responder {

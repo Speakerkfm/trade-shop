@@ -3,11 +3,12 @@ package service
 
 import (
 	"fmt"
-	"github.com/go-openapi/strfmt"
-	"github.com/satori/go.uuid"
 	"trade-shop/pkg/models"
 	"trade-shop/pkg/service/serviceiface"
 	"trade-shop/pkg/store"
+
+	"github.com/go-openapi/strfmt"
+	uuid "github.com/satori/go.uuid"
 )
 
 type Sale struct {
@@ -66,9 +67,9 @@ func (s *Sale) Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) 
 	money := 0.0
 
 	for _, val := range itemList {
-		money = money + (val.Price * float64(val.Count))
+		money += val.Price * float64(val.Count)
 
-		if err := s.st.AddItemToUser(tx, userID, val); err != nil {
+		if err = s.st.AddItemToUser(tx, userID, val); err != nil {
 			s.st.RollbackTransaction(tx)
 
 			return err
@@ -79,7 +80,7 @@ func (s *Sale) Purchase(userID uuid.UUID, sellerID uuid.UUID, saleID uuid.UUID) 
 		panic(err)
 	}
 
-	if err := s.st.RemoveMoneyFromUser(tx, userID, money); err != nil {
+	if err = s.st.RemoveMoneyFromUser(tx, userID, money); err != nil {
 		s.st.RollbackTransaction(tx)
 
 		return err
@@ -134,7 +135,7 @@ func (s *Sale) MakeSalesList(userID uuid.UUID) []*models.Sale {
 			count++
 		}
 
-		val, _ := salesMap[salesList[idx].SaleID]
+		val := salesMap[salesList[idx].SaleID]
 		salesBody[val].Items = append(salesBody[val].Items, item)
 		salesBody[val].TotalCount += item.Price * float64(item.Count)
 

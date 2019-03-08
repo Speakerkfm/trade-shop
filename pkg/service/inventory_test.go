@@ -1,13 +1,14 @@
 package service
 
 import (
-	"github.com/go-openapi/strfmt"
-	"github.com/satori/go.uuid"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"trade-shop/pkg/mocks"
 	"trade-shop/pkg/models"
 	"trade-shop/pkg/store"
+
+	"github.com/go-openapi/strfmt"
+	uuid "github.com/satori/go.uuid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestInventory_MakeInventory(t *testing.T) {

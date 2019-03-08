@@ -1,9 +1,10 @@
 package user
 
 import (
-	"gopkg.in/boj/redistore.v1"
 	"trade-shop/pkg/service/serviceiface"
 	"trade-shop/pkg/store"
+
+	redistore "gopkg.in/boj/redistore.v1"
 )
 
 type Context struct {

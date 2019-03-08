@@ -1,11 +1,12 @@
 package user
 
 import (
+	"net/http"
+	"trade-shop/pkg/restapi/operations/user"
+
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/sessions"
-	"net/http"
-	"trade-shop/pkg/restapi/operations/user"
 )
 
 type logoutSessionWriter struct {
@@ -13,7 +14,10 @@ type logoutSessionWriter struct {
 }
 
 func (ts *logoutSessionWriter) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-	sessions.Save(ts.r, rw)
+	err := sessions.Save(ts.r, rw)
+	if err != nil {
+		panic(err)
+	}
 
 	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 

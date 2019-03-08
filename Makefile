@@ -41,3 +41,9 @@ js:
 
 jstest:
 	export `cat .env` && make js
+
+fmt:
+	goimports -local gitlab.loc -w $$(find . -type f -name '*.go')
+
+lint: fmt
+	golangci-lint run --skip-dirs tmp

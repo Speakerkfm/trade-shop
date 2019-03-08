@@ -1,15 +1,16 @@
 package login
 
 import (
-	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/runtime/middleware"
-	"github.com/gorilla/sessions"
-	"gopkg.in/boj/redistore.v1"
 	"net/http"
 	"trade-shop/pkg/httperrors"
 	"trade-shop/pkg/restapi/operations/login"
 	"trade-shop/pkg/service/serviceiface"
 	"trade-shop/pkg/store"
+
+	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/gorilla/sessions"
+	redistore "gopkg.in/boj/redistore.v1"
 )
 
 type Context struct {
@@ -27,7 +28,10 @@ func NewContext(st store.StoreInterface, rst *redistore.RediStore, auth servicei
 }
 
 func (ts *loginSessionWriter) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-	sessions.Save(ts.r, rw)
+	err := sessions.Save(ts.r, rw)
+	if err != nil {
+		panic(err)
+	}
 
 	rw.Header().Del(runtime.HeaderContentType)
 	rw.Header().Set("Location", "/user/inventory")

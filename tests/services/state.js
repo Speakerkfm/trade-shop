@@ -1,7 +1,8 @@
 const fixtures = require('./fixtures'),
     mockproxy = require('./mockproxy'),
     params = require('./params'),
-    redis = require('./redis');
+    redis = require('./redis'),
+    expect = require('chai').expect;
 
 module.exports = {
   new: async function(proxyUrl) {
@@ -25,6 +26,11 @@ module.exports = {
   },
   redisSet: async (key, value) => {
       await redis.set(key, value, redis.print);
+  },
+  redisAssert: async (key, value) => {
+      await redis.get(key, function(err, result) {
+          expect(result).to.equal(value)
+      });
   },
   host: () => {
       return params.apiHost;

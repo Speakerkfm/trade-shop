@@ -2,8 +2,9 @@ package service
 
 import (
 	"fmt"
-	"github.com/streadway/amqp"
 	"trade-shop/pkg/flags"
+
+	"github.com/streadway/amqp"
 )
 
 type Queue struct {

@@ -10,19 +10,15 @@ import (
 type Store struct {
 	codec *cache.Codec
 	gorm  *gorm.DB
-	tx    *gorm.DB
 }
 
 func NewStore(db *gorm.DB, redisClient *redis.Client) *Store {
 	codec := &cache.Codec{
 		Redis: redisClient,
 
-		Marshal: func(v interface{}) ([]byte, error) {
-			return msgpack.Marshal(v)
-		},
-		Unmarshal: func(b []byte, v interface{}) error {
-			return msgpack.Unmarshal(b, v)
-		},
+		Marshal: msgpack.Marshal,
+
+		Unmarshal: msgpack.Unmarshal,
 	}
 	return &Store{gorm: db, codec: codec}
 }

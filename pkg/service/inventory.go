@@ -2,10 +2,11 @@
 package service
 
 import (
-	"github.com/go-openapi/strfmt"
-	"github.com/satori/go.uuid"
 	"trade-shop/pkg/models"
 	"trade-shop/pkg/store"
+
+	"github.com/go-openapi/strfmt"
+	uuid "github.com/satori/go.uuid"
 )
 
 type Inventory struct {

@@ -3,9 +3,10 @@ package store
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/jinzhu/gorm"
-	"github.com/satori/go.uuid"
 	"time"
+
+	"github.com/jinzhu/gorm"
+	uuid "github.com/satori/go.uuid"
 )
 
 const cacheLiveTime = 10 * time.Minute
@@ -63,7 +64,7 @@ func (st *Store) AddItemToUser(db *gorm.DB, userID uuid.UUID, item *ItemSale) er
 		return db.Create(&inventory).Error
 	}
 
-	inventory.Count = inventory.Count + item.Count
+	inventory.Count += item.Count
 
 	return db.Save(&inventory).Error
 }
@@ -84,7 +85,7 @@ func (st *Store) RemoveItemFromUser(db *gorm.DB, userID uuid.UUID, itemID uuid.U
 	}
 
 	if inventory.Count > count {
-		inventory.Count = inventory.Count - count
+		inventory.Count -= count
 		return db.Save(&inventory).Error
 	}
 

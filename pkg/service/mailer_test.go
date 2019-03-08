@@ -2,11 +2,12 @@ package service
 
 import (
 	"encoding/json"
-	"github.com/satori/go.uuid"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"trade-shop/pkg/mocks"
 	"trade-shop/pkg/store"
+
+	uuid "github.com/satori/go.uuid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMailer_SendNotificationEmail(t *testing.T) {

@@ -2,11 +2,15 @@ package store
 
 import (
 	"fmt"
-	"github.com/satori/go.uuid"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	uuid "github.com/satori/go.uuid"
+	"github.com/stretchr/testify/assert"
 )
+
+const iName1 = "item1"
+const iName2 = "item2"
 
 func TestStore_GetInventoryByUserId(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
@@ -19,11 +23,11 @@ func TestStore_GetInventoryByUserId(t *testing.T) {
 	}
 	item1 := Item{
 		ID:   iID1,
-		Name: "item1",
+		Name: iName1,
 	}
 	item2 := Item{
 		ID:   iID2,
-		Name: "item2",
+		Name: iName2,
 	}
 	inv1 := Inventory{
 		UserID: uID,
@@ -45,7 +49,7 @@ func TestStore_GetInventoryByUserId(t *testing.T) {
 	res1 := s.GetInventoryByUserId(uID)
 	cacheKey := fmt.Sprint("rate_inventory_", uID)
 	rs := s.codec.Redis.Get(cacheKey)
-	assert.True(t, res1[1].Name == "item2")
+	assert.True(t, res1[1].Name == iName2)
 	assert.True(t, rs.Val() != "")
 
 	Gorm.Delete(&u)
@@ -80,11 +84,11 @@ func TestStore_AddItemToUser(t *testing.T) {
 	}
 	item1 := Item{
 		ID:   iID1,
-		Name: "item1",
+		Name: iName1,
 	}
 	item2 := Item{
 		ID:   iID2,
-		Name: "item2",
+		Name: iName2,
 	}
 	inv1 := Inventory{
 		UserID: uID,
@@ -101,12 +105,14 @@ func TestStore_AddItemToUser(t *testing.T) {
 	Gorm.Table("items").Create(&item2)
 	Gorm.Create(&inv1)
 
-	s.AddItemToUser(Gorm, uID, &ItemSale{ItemID: iID1, Name: "item1", Count: 5})
+	err := s.AddItemToUser(Gorm, uID, &ItemSale{ItemID: iID1, Name: iName1, Count: 5})
 	s.gorm.First(&inv1)
+	assert.Nil(t, err)
 	assert.True(t, inv1.Count == 10)
 
-	s.AddItemToUser(Gorm, uID, &ItemSale{ItemID: iID2, Name: "item2", Count: 3})
+	err = s.AddItemToUser(Gorm, uID, &ItemSale{ItemID: iID2, Name: iName2, Count: 3})
 	s.gorm.First(&inv2)
+	assert.Nil(t, err)
 	assert.True(t, inv2.Count == 3)
 
 	Gorm.Delete(&u)
@@ -127,11 +133,11 @@ func TestStore_RemoveItemFromUser(t *testing.T) {
 	}
 	item1 := Item{
 		ID:   iID1,
-		Name: "item1",
+		Name: iName1,
 	}
 	item2 := Item{
 		ID:   iID2,
-		Name: "item2",
+		Name: iName2,
 	}
 	inv1 := Inventory{
 		UserID: uID,

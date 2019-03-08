@@ -1,10 +1,11 @@
 package store
 
 import (
+	"testing"
+
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func Test_notFound(t *testing.T) {

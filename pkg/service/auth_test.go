@@ -1,12 +1,13 @@
 package service
 
 import (
-	"github.com/gorilla/sessions"
-	"github.com/satori/go.uuid"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
 	"trade-shop/pkg/mocks"
+
+	"github.com/gorilla/sessions"
+	uuid "github.com/satori/go.uuid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAuthService_GetUserAuth(t *testing.T) {

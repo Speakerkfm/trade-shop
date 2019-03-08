@@ -4,7 +4,7 @@ import "trade-shop/pkg/models"
 
 var WrongUsernameOrPassword = models.ErrorResult{Error: &models.ErrorResultError{
 	Code:        "001",
-	Description: "Wrong username or password",
+	Description: "Wrong email or password",
 }}
 var WrongAccess = models.ErrorResult{Error: &models.ErrorResultError{
 	Code:        "002",

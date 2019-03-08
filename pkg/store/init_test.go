@@ -1,13 +1,14 @@
 package store
 
 import (
+	"os"
+	"time"
+
 	"github.com/go-redis/cache"
 	"github.com/go-redis/redis"
 	"github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/vmihailenco/msgpack"
-	"os"
-	"time"
 )
 
 var (
@@ -46,12 +47,9 @@ func init() {
 	codec := &cache.Codec{
 		Redis: redisClient,
 
-		Marshal: func(v interface{}) ([]byte, error) {
-			return msgpack.Marshal(v)
-		},
-		Unmarshal: func(b []byte, v interface{}) error {
-			return msgpack.Unmarshal(b, v)
-		},
+		Marshal: msgpack.Marshal,
+
+		Unmarshal: msgpack.Unmarshal,
 	}
 
 	Codec = codec

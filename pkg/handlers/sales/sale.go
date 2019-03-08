@@ -1,9 +1,10 @@
 package sales
 
 import (
-	"github.com/go-openapi/runtime/middleware"
 	"trade-shop/pkg/httperrors"
 	"trade-shop/pkg/restapi/operations/sales"
+
+	"github.com/go-openapi/runtime/middleware"
 )
 
 func (c *Context) SaleItems(params sales.SaleParams) middleware.Responder {

@@ -1,11 +1,6 @@
 package main
 
 import (
-	"github.com/go-openapi/swag"
-	"github.com/go-redis/redis"
-	"github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
-	"gopkg.in/boj/redistore.v1"
 	"log"
 	"os"
 	"strconv"
@@ -15,8 +10,14 @@ import (
 	"trade-shop/pkg/restapi/operations"
 	"trade-shop/pkg/service"
 
+	"github.com/go-openapi/swag"
+	"github.com/go-redis/redis"
+	"github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
+	redistore "gopkg.in/boj/redistore.v1"
+
 	"github.com/go-openapi/loads"
-	"github.com/jessevdk/go-flags"
+	flags "github.com/jessevdk/go-flags"
 )
 
 func main() {
@@ -27,6 +28,8 @@ func main() {
 
 	api := operations.NewTradeShopAPI(swaggerSpec)
 	server := restapi.NewServer(api)
+
+	//nolint
 	defer server.Shutdown()
 
 	//config
@@ -61,7 +64,7 @@ func main() {
 	//redis
 	redisOpt := redis.Options{Addr: conf.RedisHost}
 	redisClient := redis.NewClient(&redisOpt)
-	if _, err := redisClient.Ping().Result(); err != nil {
+	if _, err = redisClient.Ping().Result(); err != nil {
 		panic(err)
 	}
 
@@ -79,7 +82,7 @@ func main() {
 	defer rstore.Close()
 
 	//set handlers
-	handler := configureAPI(api, db, redisClient, rstore, amqpClient, conf)
+	handler := configureAPI(api, db, redisClient, rstore, amqpClient)
 	server.SetHandler(handler)
 
 	if err := server.Serve(); err != nil {
