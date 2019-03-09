@@ -43,6 +43,10 @@ js:
 jstest:
 	export `cat .env` && make js
 
+test:
+	make unittest
+	make jstest
+
 fmt:
 	goimports -local gitlab.loc -w $$(find . -type f -name '*.go')
 
