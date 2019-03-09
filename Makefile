@@ -51,3 +51,7 @@ lint: fmt
 
 clearqueue:
 	rabbitmqadmin purge queue name=mailer
+
+migrations:
+	mysql -u root < migrations/sql/db/dump.sql
+	mysql -u root < migrations/sql/data/trade_shop_data.sql

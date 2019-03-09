@@ -1,0 +1,14 @@
+INSERT INTO `trade-shop`.inventory (user_id, item_id, count) VALUES ('017d4ff8-e2c8-42f2-89f3-7822eeca3ebe', 'a5630737-636c-454c-826f-3002aaf46376', 9);
+INSERT INTO `trade-shop`.inventory (user_id, item_id, count) VALUES ('56a8b65c-7432-463f-aadc-0e5b7eca8d06', 'a5630737-636c-454c-826f-3002aaf46376', 30);
+INSERT INTO `trade-shop`.inventory (user_id, item_id, count) VALUES ('56a8b65c-7432-463f-aadc-0e5b7eca8d06', 'ad663316-7a59-48f2-8b15-e4f99573ebc0', 3);
+INSERT INTO `trade-shop`.item_sale (sale_id, item_id, count, price) VALUES ('332d3e06-c05a-429b-892b-2f6ce064ee34', 'a5630737-636c-454c-826f-3002aaf46376', 3, 50.5);
+INSERT INTO `trade-shop`.item_sale (sale_id, item_id, count, price) VALUES ('332d3e06-c05a-429b-892b-2f6ce064ee34', 'ad663316-7a59-48f2-8b15-e4f99573ebc0', 1, 10);
+INSERT INTO `trade-shop`.item_sale (sale_id, item_id, count, price) VALUES ('59f1640e-b4f4-41dd-879f-17392a54419b', 'a5630737-636c-454c-826f-3002aaf46376', 30, 30.3);
+INSERT INTO `trade-shop`.item_sale (sale_id, item_id, count, price) VALUES ('030e212f-99d7-4329-a69f-f7613d30a499', 'ad663316-7a59-48f2-8b15-e4f99573ebc0', 4, 15.9);
+INSERT INTO `trade-shop`.items (id, name) VALUES ('a5630737-636c-454c-826f-3002aaf46376', 'item1');
+INSERT INTO `trade-shop`.items (id, name) VALUES ('ad663316-7a59-48f2-8b15-e4f99573ebc0', 'item2');
+INSERT INTO `trade-shop`.sales (id, user_id) VALUES ('332d3e06-c05a-429b-892b-2f6ce064ee34', '56a8b65c-7432-463f-aadc-0e5b7eca8d06');
+INSERT INTO `trade-shop`.sales (id, user_id) VALUES ('59f1640e-b4f4-41dd-879f-17392a54419b', '56a8b65c-7432-463f-aadc-0e5b7eca8d06');
+INSERT INTO `trade-shop`.sales (id, user_id) VALUES ('030e212f-99d7-4329-a69f-f7613d30a499', '017d4ff8-e2c8-42f2-89f3-7822eeca3ebe');
+INSERT INTO `trade-shop`.users (id, email, password, bill) VALUES ('017d4ff8-e2c8-42f2-89f3-7822eeca3ebe', 'speaker123@mail.ru', '$2a$10$ygglARoO62D8QVQuZzO/LenEtc4bNTmSzer1P2abcW2/9sfCxhjx6', 500);
+INSERT INTO `trade-shop`.users (id, email, password, bill) VALUES ('56a8b65c-7432-463f-aadc-0e5b7eca8d06', 'speaker@mail.ru', '$2a$10$g7k32.pyRChKrOWukELSzeZhYNFXZVIpwIebv.IV0OuAPGjQLiiaG', 100);

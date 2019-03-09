@@ -26,7 +26,7 @@ describe('POST /user', () => {
             "speaker12345@mail.ru",
             "123456",
             function (res, body, next) {
-                expect(body).equal(null)
+                expect(body).equal(null);
                 next();
             },
             200

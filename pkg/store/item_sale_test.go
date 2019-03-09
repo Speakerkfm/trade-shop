@@ -1,12 +1,12 @@
 package store
 
 import (
+	"fmt"
+	"github.com/go-openapi/strfmt"
+	"github.com/satori/go.uuid"
+	"github.com/stretchr/testify/assert"
 	"testing"
 	"trade-shop/pkg/models"
-
-	"github.com/go-openapi/strfmt"
-	uuid "github.com/satori/go.uuid"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestStore_GetSaleItemList(t *testing.T) {
@@ -49,8 +49,8 @@ func TestStore_GetSaleItemList(t *testing.T) {
 	Gorm.Table("items").Delete(&item2)
 	Gorm.Delete(&sale1)
 	Gorm.Delete(&sale2)
-	Gorm.Delete(&itemSale1)
-	Gorm.Delete(&itemSale2)
+	Gorm.Where("sale_id = ?", sale1.ID).Delete(&ItemSale{})
+	Gorm.Where("sale_id = ?", sale2.ID).Delete(&ItemSale{})
 }
 
 func TestStore_GetUserSaleItemList(t *testing.T) {
@@ -93,8 +93,8 @@ func TestStore_GetUserSaleItemList(t *testing.T) {
 	Gorm.Table("items").Delete(&item2)
 	Gorm.Delete(&sale1)
 	Gorm.Delete(&sale2)
-	Gorm.Delete(&itemSale1)
-	Gorm.Delete(&itemSale2)
+	Gorm.Where("sale_id = ?", sale1.ID).Delete(&ItemSale{})
+	Gorm.Where("sale_id = ?", sale2.ID).Delete(&ItemSale{})
 }
 
 func TestStore_GetItemsInSaleBySaleID(t *testing.T) {
@@ -131,8 +131,7 @@ func TestStore_GetItemsInSaleBySaleID(t *testing.T) {
 	Gorm.Table("items").Delete(&item1)
 	Gorm.Table("items").Delete(&item2)
 	Gorm.Delete(&sale)
-	Gorm.Delete(&itemSale1)
-	Gorm.Delete(&itemSale2)
+	Gorm.Where("sale_id = ?", sale.ID).Delete(&ItemSale{})
 }
 
 func TestStore_DeleteItemsInSale(t *testing.T) {
@@ -181,10 +180,11 @@ func TestStore_AddItemToSale(t *testing.T) {
 	err := s.AddItemToSale(Gorm, sID, &item)
 	assert.Nil(t, err)
 
-	itemSale := ItemSale{SaleID: sID, ItemID: iID1}
-	Gorm.First(&itemSale)
+	var itemSale ItemSale
+	Gorm.Where("sale_id = ? and item_id = ?", sID, iID1).First(&itemSale)
 
+	fmt.Println(itemSale)
 	assert.True(t, itemSale.Price == 12.20)
 
-	Gorm.Delete(&itemSale)
+	Gorm.Where("sale_id = ?", sID).Delete(&ItemSale{})
 }
