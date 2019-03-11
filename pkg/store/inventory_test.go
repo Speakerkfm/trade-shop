@@ -15,9 +15,9 @@ const iName2 = "item2"
 func TestStore_GetInventoryByUserId(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
-	uID, _ := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
+	uID := uuid.NewV4()
 	u := User{
 		ID: uID,
 	}
@@ -62,7 +62,7 @@ func TestStore_GetInventoryByUserId(t *testing.T) {
 func TestStore_ClearInventoryCache(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	uID, _ := uuid.NewV4()
+	uID := uuid.NewV4()
 	cacheKey := fmt.Sprint("rate_inventory_", uID)
 
 	s.codec.Redis.Set(cacheKey, "12345", 10*time.Minute)
@@ -76,9 +76,9 @@ func TestStore_ClearInventoryCache(t *testing.T) {
 func TestStore_AddItemToUser(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
-	uID, _ := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
+	uID := uuid.NewV4()
 	u := User{
 		ID: uID,
 	}
@@ -125,9 +125,9 @@ func TestStore_AddItemToUser(t *testing.T) {
 func TestStore_RemoveItemFromUser(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
-	uID, _ := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
+	uID := uuid.NewV4()
 	u := User{
 		ID: uID,
 	}

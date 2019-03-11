@@ -11,18 +11,23 @@ $ git clone https://github.com/Speakerkfm/trade-shop
 $ make migrations
 ```
 
-3. Configure .env
+3. Install dependencies
+```bash
+$ dep ensure
+```
+
+4. Configure .env
 ```bash
 $ cp .env.dist .env
 ```
 
-4. Run tests
+5. Run tests
 ```bash
 $ make clearqueue
 $ make test
 ```
 
-5. Run project
+6. Run project
 ```bash
 $ make run
 ```

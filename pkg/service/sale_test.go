@@ -19,12 +19,12 @@ func TestSale_CreateLot(t *testing.T) {
 
 	sl := &Sale{&stI, &mailer}
 
-	sID1, _ := uuid.NewV4()
-	uID1, _ := uuid.NewV4()
-	sID2, _ := uuid.NewV4()
-	uID2, _ := uuid.NewV4()
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
+	sID1 := uuid.NewV4()
+	uID1 := uuid.NewV4()
+	sID2 := uuid.NewV4()
+	uID2 := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
 	errNotEnough := fmt.Errorf("not enough items")
 
 	cases := map[string]struct {
@@ -92,11 +92,11 @@ func TestSale_Purchase(t *testing.T) {
 
 	sl := NewSale(&stI, &mailer)
 
-	sID, _ := uuid.NewV4()
-	slID, _ := uuid.NewV4()
-	uID, _ := uuid.NewV4()
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
+	sID := uuid.NewV4()
+	slID := uuid.NewV4()
+	uID := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
 
 	cases := map[string]struct {
 		userID   uuid.UUID
@@ -159,11 +159,11 @@ func TestSale_MakeSalesList(t *testing.T) {
 
 	sl := NewSale(&stI, &mailer)
 
-	sID, _ := uuid.NewV4()
-	slID, _ := uuid.NewV4()
-	uID, _ := uuid.NewV4()
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
+	sID := uuid.NewV4()
+	slID := uuid.NewV4()
+	uID := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
 
 	cases := map[string]struct {
 		userID     uuid.UUID
@@ -203,10 +203,10 @@ func TestSale_MakeUserSalesList(t *testing.T) {
 
 	sl := NewSale(&stI, &mailer)
 
-	slID, _ := uuid.NewV4()
-	uID, _ := uuid.NewV4()
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
+	slID := uuid.NewV4()
+	uID := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
 
 	cases := map[string]struct {
 		userID     uuid.UUID
@@ -246,10 +246,10 @@ func TestSale_Cancel(t *testing.T) {
 
 	sl := NewSale(&stI, &mailer)
 
-	slID, _ := uuid.NewV4()
-	uID, _ := uuid.NewV4()
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
+	slID := uuid.NewV4()
+	uID := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
 
 	cases := map[string]struct {
 		userID   uuid.UUID

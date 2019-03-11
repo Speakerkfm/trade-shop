@@ -13,10 +13,10 @@ import (
 func TestStore_GetSaleItemList(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	sID1, _ := uuid.NewV4()
-	sID2, _ := uuid.NewV4()
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
+	sID1 := uuid.NewV4()
+	sID2 := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
 
 	item1 := Item{
 		ID:   iID1,
@@ -57,10 +57,10 @@ func TestStore_GetSaleItemList(t *testing.T) {
 func TestStore_GetUserSaleItemList(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	uID, _ := uuid.NewV4()
-	sID, _ := uuid.NewV4()
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
+	uID := uuid.NewV4()
+	sID := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
 
 	item1 := Item{
 		ID:   iID1,
@@ -101,9 +101,9 @@ func TestStore_GetUserSaleItemList(t *testing.T) {
 func TestStore_GetItemsInSaleBySaleID(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	sID, _ := uuid.NewV4()
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
+	sID := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
 
 	item1 := Item{
 		ID:   iID1,
@@ -138,9 +138,9 @@ func TestStore_GetItemsInSaleBySaleID(t *testing.T) {
 func TestStore_DeleteItemsInSale(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	sID, _ := uuid.NewV4()
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
+	sID := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
 
 	item1 := Item{
 		ID:   iID1,
@@ -173,8 +173,8 @@ func TestStore_DeleteItemsInSale(t *testing.T) {
 func TestStore_AddItemToSale(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	sID, _ := uuid.NewV4()
-	iID1, _ := uuid.NewV4()
+	sID := uuid.NewV4()
+	iID1 := uuid.NewV4()
 
 	item := models.ItemSale{ID: strfmt.UUID(iID1.String()), Name: "item1", Count: 3, Price: 12.20}
 

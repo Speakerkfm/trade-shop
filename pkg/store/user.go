@@ -28,7 +28,7 @@ func (st *Store) UserByEmail(email string) (*User, bool) {
 }
 
 func (st *Store) CreateNewUser(email string, password string) (*User, error) {
-	id, _ := uuid.NewV4()
+	id := uuid.NewV4()
 	passwordHash := hashAndSalt([]byte(password))
 	user := User{ID: id, Email: email, Password: passwordHash}
 

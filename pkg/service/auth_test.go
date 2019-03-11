@@ -13,7 +13,7 @@ import (
 func TestAuthService_GetUserAuth(t *testing.T) {
 	rst := mocks.RediStore{}
 	au := NewAuthService(&rst)
-	uID, _ := uuid.NewV4()
+	uID := uuid.NewV4()
 
 	cases := map[string]struct {
 		request *http.Request

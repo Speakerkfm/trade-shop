@@ -11,7 +11,7 @@ import (
 func TestStore_UserByEmail(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	uID, _ := uuid.NewV4()
+	uID := uuid.NewV4()
 	user := User{ID: uID, Email: "asdf@mail.com"}
 
 	Gorm.Table("users").Create(&user)
@@ -26,7 +26,7 @@ func TestStore_UserByEmail(t *testing.T) {
 func TestStore_IsEmailTaken(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	uID, _ := uuid.NewV4()
+	uID := uuid.NewV4()
 	user := User{ID: uID, Email: "asdf@mail.com"}
 
 	Gorm.Table("users").Create(&user)
@@ -53,7 +53,7 @@ func TestStore_CreateNewUser(t *testing.T) {
 func TestStore_UserByUserID(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	uID, _ := uuid.NewV4()
+	uID := uuid.NewV4()
 	user := User{ID: uID, Email: "asdf@mail.com"}
 
 	Gorm.Table("users").Create(&user)
@@ -68,7 +68,7 @@ func TestStore_UserByUserID(t *testing.T) {
 func TestStore_GetUserBill(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	uID, _ := uuid.NewV4()
+	uID := uuid.NewV4()
 	user := User{ID: uID, Email: "asdf@mail.com", Bill: 1234.5}
 
 	Gorm.Table("users").Create(&user)
@@ -82,7 +82,7 @@ func TestStore_GetUserBill(t *testing.T) {
 func TestStore_AddMoneyToUser(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	uID, _ := uuid.NewV4()
+	uID := uuid.NewV4()
 	user := User{ID: uID, Email: "asdf@mail.com", Bill: 1234.5}
 
 	Gorm.Table("users").Create(&user)
@@ -99,7 +99,7 @@ func TestStore_AddMoneyToUser(t *testing.T) {
 func TestStore_RemoveMoneyFromUser(t *testing.T) {
 	s := NewStore(Gorm, RedisClient)
 
-	uID, _ := uuid.NewV4()
+	uID := uuid.NewV4()
 	user := User{ID: uID, Email: "asdf@mail.com", Bill: 1234.5}
 
 	Gorm.Table("users").Create(&user)

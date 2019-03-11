@@ -14,10 +14,10 @@ import (
 func TestInventory_MakeInventory(t *testing.T) {
 	stI := mocks.StoreInterface{}
 	inv := NewInventory(&stI)
-	uID, _ := uuid.NewV4()
-	uID2, _ := uuid.NewV4()
-	iID1, _ := uuid.NewV4()
-	iID2, _ := uuid.NewV4()
+	uID := uuid.NewV4()
+	uID2 := uuid.NewV4()
+	iID1 := uuid.NewV4()
+	iID2 := uuid.NewV4()
 
 	cases := map[string]struct {
 		userID    uuid.UUID

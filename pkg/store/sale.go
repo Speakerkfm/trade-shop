@@ -11,7 +11,7 @@ type Sales struct {
 }
 
 func (s *Sales) BeforeCreate(scope *gorm.Scope) error {
-	id, _ := uuid.NewV4()
+	id := uuid.NewV4()
 	return scope.SetColumn("id", id)
 }
 

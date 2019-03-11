@@ -13,9 +13,9 @@ import (
 func TestMailer_SendNotificationEmail(t *testing.T) {
 	amqp := mocks.IAmqpService{}
 	mailer := &Mailer{amqpService: &amqp}
-	sID, _ := uuid.NewV4()
-	saleID, _ := uuid.NewV4()
-	iID, _ := uuid.NewV4()
+	sID := uuid.NewV4()
+	saleID := uuid.NewV4()
+	iID := uuid.NewV4()
 
 	cases := map[string]struct {
 		to       string
