@@ -1,0 +1,4 @@
+GET /daily_json.js HTTP/1.1
+Host: www.cbr-xml-daily.ru
+User-Agent: Go-http-client/1.1
+

@@ -23,6 +23,7 @@ iface:
 	ifacemaker -f pkg/service/sale.go -s Sale -i Sale -p serviceiface -o pkg/service/serviceiface/sale.go
 	ifacemaker -f pkg/service/auth.go -s AuthService -i AuthService -p serviceiface -o pkg/service/serviceiface/auth.go
 	ifacemaker -f pkg/service/new_user.go -s UserService -i UserService -p serviceiface -o pkg/service/serviceiface/new_user.go
+	ifacemaker -f pkg/service/exchange.go -s ExchangeService -i ExchangeService -p serviceiface -o pkg/service/serviceiface/exchange.go
 
 mock: iface
 	mockery -dir pkg/store --all -output pkg/mocks -case underscore

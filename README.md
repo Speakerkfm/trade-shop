@@ -18,6 +18,7 @@ $ cp .env.dist .env
 
 4. Run tests
 ```bash
+$ make clearqueue
 $ make test
 ```
 

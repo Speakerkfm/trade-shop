@@ -1,0 +1,12 @@
+get:
+  tags:
+  - exchange
+  description: Курсы обмена валют
+  operationId: exchange_rates
+  responses:
+    200:
+      description: "OK"
+      schema:
+        type: object
+    401:
+      $ref: './responses/response_401.yaml'

@@ -11,6 +11,7 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 
 	"trade-shop/pkg/restapi/operations"
+	"trade-shop/pkg/restapi/operations/exchange"
 	"trade-shop/pkg/restapi/operations/login"
 	"trade-shop/pkg/restapi/operations/register"
 	"trade-shop/pkg/restapi/operations/sales"
@@ -42,6 +43,9 @@ func configureAPI(api *operations.TradeShopAPI) http.Handler {
 	})
 	api.UserCancelHandler = user.CancelHandlerFunc(func(params user.CancelParams) middleware.Responder {
 		return middleware.NotImplemented("operation user.Cancel has not yet been implemented")
+	})
+	api.ExchangeExchangeRatesHandler = exchange.ExchangeRatesHandlerFunc(func(params exchange.ExchangeRatesParams) middleware.Responder {
+		return middleware.NotImplemented("operation exchange.ExchangeRates has not yet been implemented")
 	})
 	api.UserInventoryHandler = user.InventoryHandlerFunc(func(params user.InventoryParams) middleware.Responder {
 		return middleware.NotImplemented("operation user.Inventory has not yet been implemented")

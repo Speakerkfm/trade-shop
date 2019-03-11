@@ -27,3 +27,5 @@ paths:
     $ref: './sales.yaml'
   /sales/{sale_id}/buy:
     $ref: './buy.yaml'
+  /exchange_rates:
+    $ref: './exchange_rates.yaml'

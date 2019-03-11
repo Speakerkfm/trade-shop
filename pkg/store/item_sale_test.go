@@ -2,11 +2,12 @@ package store
 
 import (
 	"fmt"
-	"github.com/go-openapi/strfmt"
-	"github.com/satori/go.uuid"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"trade-shop/pkg/models"
+
+	"github.com/go-openapi/strfmt"
+	uuid "github.com/satori/go.uuid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestStore_GetSaleItemList(t *testing.T) {

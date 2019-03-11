@@ -2,11 +2,13 @@ package main
 
 import (
 	"net/http"
+	"trade-shop/pkg/handlers/exchange"
 	"trade-shop/pkg/handlers/login"
 	"trade-shop/pkg/handlers/register"
 	"trade-shop/pkg/handlers/sales"
 	"trade-shop/pkg/handlers/user"
 	"trade-shop/pkg/restapi/operations"
+	exchangeApi "trade-shop/pkg/restapi/operations/exchange"
 	loginApi "trade-shop/pkg/restapi/operations/login"
 	registerApi "trade-shop/pkg/restapi/operations/register"
 	salesApi "trade-shop/pkg/restapi/operations/sales"
@@ -27,6 +29,7 @@ func configureAPI(api *operations.TradeShopAPI, db *gorm.DB, redisClient *redis.
 	authService := service.NewAuthService(rst)
 	invService := service.NewInventory(st)
 	userService := service.NewUserService(st)
+	exchangeService := service.NewExchangeService()
 
 	salesContext := sales.NewContext(st, saleService, authService)
 	api.SalesSaleHandler = salesApi.SaleHandlerFunc(salesContext.SaleItems)
@@ -44,6 +47,9 @@ func configureAPI(api *operations.TradeShopAPI, db *gorm.DB, redisClient *redis.
 
 	registerContext := register.NewContext(userService)
 	api.RegisterRegisterHandler = registerApi.RegisterHandlerFunc(registerContext.Register)
+
+	exchangeContext := exchange.NewContext(exchangeService, authService)
+	api.ExchangeExchangeRatesHandler = exchangeApi.ExchangeRatesHandlerFunc(exchangeContext.GetExchangeRates)
 
 	api.ServerShutdown = func() {}
 

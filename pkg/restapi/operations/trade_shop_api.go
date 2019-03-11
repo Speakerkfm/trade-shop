@@ -19,6 +19,7 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
+	"trade-shop/pkg/restapi/operations/exchange"
 	"trade-shop/pkg/restapi/operations/login"
 	"trade-shop/pkg/restapi/operations/register"
 	"trade-shop/pkg/restapi/operations/sales"
@@ -47,6 +48,9 @@ func NewTradeShopAPI(spec *loads.Document) *TradeShopAPI {
 		}),
 		UserCancelHandler: user.CancelHandlerFunc(func(params user.CancelParams) middleware.Responder {
 			return middleware.NotImplemented("operation UserCancel has not yet been implemented")
+		}),
+		ExchangeExchangeRatesHandler: exchange.ExchangeRatesHandlerFunc(func(params exchange.ExchangeRatesParams) middleware.Responder {
+			return middleware.NotImplemented("operation ExchangeExchangeRates has not yet been implemented")
 		}),
 		UserInventoryHandler: user.InventoryHandlerFunc(func(params user.InventoryParams) middleware.Responder {
 			return middleware.NotImplemented("operation UserInventory has not yet been implemented")
@@ -104,6 +108,8 @@ type TradeShopAPI struct {
 	SalesBuyHandler sales.BuyHandler
 	// UserCancelHandler sets the operation handler for the cancel operation
 	UserCancelHandler user.CancelHandler
+	// ExchangeExchangeRatesHandler sets the operation handler for the exchange rates operation
+	ExchangeExchangeRatesHandler exchange.ExchangeRatesHandler
 	// UserInventoryHandler sets the operation handler for the inventory operation
 	UserInventoryHandler user.InventoryHandler
 	// LoginLoginHandler sets the operation handler for the login operation
@@ -187,6 +193,10 @@ func (o *TradeShopAPI) Validate() error {
 
 	if o.UserCancelHandler == nil {
 		unregistered = append(unregistered, "user.CancelHandler")
+	}
+
+	if o.ExchangeExchangeRatesHandler == nil {
+		unregistered = append(unregistered, "exchange.ExchangeRatesHandler")
 	}
 
 	if o.UserInventoryHandler == nil {
@@ -324,6 +334,11 @@ func (o *TradeShopAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/user/sales/{sale_id}/cancel"] = user.NewCancel(o.context, o.UserCancelHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/exchange_rates"] = exchange.NewExchangeRates(o.context, o.ExchangeExchangeRatesHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

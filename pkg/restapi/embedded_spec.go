@@ -33,6 +33,29 @@ func init() {
     "version": "0.1.0"
   },
   "paths": {
+    "/exchange_rates": {
+      "get": {
+        "description": "Курсы обмена валют",
+        "tags": [
+          "exchange"
+        ],
+        "operationId": "exchange_rates",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "description": "Аутентификация пользователя по почте и паролю.",
@@ -471,6 +494,29 @@ func init() {
     "version": "0.1.0"
   },
   "paths": {
+    "/exchange_rates": {
+      "get": {
+        "description": "Курсы обмена валют",
+        "tags": [
+          "exchange"
+        ],
+        "operationId": "exchange_rates",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Пользователь не аутентифицирован в системе",
+            "schema": {
+              "$ref": "#/definitions/errorResult"
+            }
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "description": "Аутентификация пользователя по почте и паролю.",
