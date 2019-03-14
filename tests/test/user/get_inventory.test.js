@@ -44,7 +44,7 @@ describe("GET /user/inventory", () => {
         });
 
         step("check redis", async () => {
-           await state.redisAssert("rate_inventory_017d4ff8-e2c8-42f2-89f3-7822eeca3ebe", "[{\"UserID\":\"017d4ff8-e2c8-42f2-89f3-7822eeca3ebe\",\"ItemID\":\"a5630737-636c-454c-826f-3002aaf46376\",\"Name\":\"item1\",\"Count\":9}]");
+           await state.redisAssertNotNull("rate_inventory_017d4ff8-e2c8-42f2-89f3-7822eeca3ebe", "���UserID�}O���B��x\"��>��ItemID��c7clEL�o0��cv�Name�item1�Count�");
         });
     });
 
@@ -65,7 +65,7 @@ describe("GET /user/inventory", () => {
         });
 
         step("check redis", async () => {
-            await state.redisAssert("rate_inventory_017d4ff8-e2c8-42f2-89f3-7822eeca3ebe", null);
+            await state.redisAssertNull("rate_inventory_017d4ff8-e2c8-42f2-89f3-7822eeca3ebe", null);
         });
     });
 });

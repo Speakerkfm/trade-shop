@@ -27,9 +27,14 @@ module.exports = {
   redisSet: async (key, value) => {
       await redis.set(key, value, redis.print);
   },
-  redisAssert: async (key, value) => {
+    redisAssertNull: async (key) => {
+        await redis.get(key, function(err, result) {
+            expect(result).equal(null)
+        });
+    },
+  redisAssertNotNull: async (key) => {
       await redis.get(key, function(err, result) {
-          expect(result).to.equal(value)
+          expect(result).not.equal(null)
       });
   },
   host: () => {

@@ -1,8 +1,8 @@
 package store
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/go-redis/cache"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -10,6 +10,7 @@ import (
 )
 
 const cacheLiveTime = 10 * time.Minute
+const inventoryRedisPrefix = "rate_inventory_"
 
 type Inventory struct {
 	UserID uuid.UUID `gorm:"primary_key"`
@@ -21,15 +22,9 @@ type Inventory struct {
 func (st *Store) GetInventoryByUserId(userID uuid.UUID) []*Inventory {
 	var Items []*Inventory
 
-	cacheKey := fmt.Sprint("rate_inventory_", userID)
-	rate := st.codec.Redis.Get(cacheKey)
-
-	if rate.Val() != "" {
-		if bytes, err := rate.Bytes(); err == nil {
-			if err := json.Unmarshal(bytes, &Items); err == nil {
-				return Items
-			}
-		}
+	cacheKey := fmt.Sprint(inventoryRedisPrefix, userID)
+	if err := st.codec.Get(cacheKey, Items); err == nil {
+		return Items
 	}
 
 	st.gorm.Raw(`
@@ -38,17 +33,19 @@ func (st *Store) GetInventoryByUserId(userID uuid.UUID) []*Inventory {
 		on i.item_id = its.id
 		where i.user_id = ?`, userID).Scan(&Items)
 
-	if value, err := json.Marshal(Items); err == nil {
-		if err := st.codec.Redis.Set(cacheKey, value, cacheLiveTime).Err(); err != nil {
-			panic(err)
-		}
+	if err := st.codec.Set(&cache.Item{
+		Key:        cacheKey,
+		Object:     Items,
+		Expiration: cacheLiveTime,
+	}); err != nil {
+		panic(err)
 	}
 
 	return Items
 }
 
 func (st *Store) ClearInventoryCache(userID uuid.UUID) {
-	cacheKey := fmt.Sprint("rate_inventory_", userID)
+	cacheKey := fmt.Sprint(inventoryRedisPrefix, userID)
 	st.codec.Redis.Del(cacheKey)
 }
 
